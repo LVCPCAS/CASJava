@@ -34,4 +34,8 @@ public class Arcosine extends Expr {
 		return Math.acos(arguments.get(0).evaluate(value));
 	}
 
+	public String toString(){
+		return ("arcos("+arguments.get(0).toString()+")");
+	}
+
 }

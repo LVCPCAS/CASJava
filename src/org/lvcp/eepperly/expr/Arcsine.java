@@ -33,5 +33,6 @@ public class Arcsine extends Expr {
 	public double evaluate(double value){
 		return Math.asin(arguments.get(0).evaluate(value));
 	}
+	
 
 }

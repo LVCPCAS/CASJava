@@ -19,7 +19,7 @@ public class Main {
 		List<Expr> myList = new ArrayList<>();
 		myList.add(Expr.MINUS_ONE);
 		myList.add(X);
-		myList.add(new Sine(listContainingX));
+		myList.add(new Arcosine(listContainingX));
 		Expr myExpr = new Product(myList);
 
 		System.out.println("EXPRESSION: "+myExpr);

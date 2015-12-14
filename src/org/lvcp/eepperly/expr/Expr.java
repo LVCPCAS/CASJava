@@ -34,7 +34,7 @@ public abstract class Expr {
 
 	public double findZero(double guess){
 		Expr iterTerm = Product.quotient(this,this.differentiate());
-		while (this.evaluate(guess)>1e-8){
+		while (Math.abs(evaluate(guess))>1e-8){
 			guess -= iterTerm.evaluate(guess);
 		}
 		return guess;

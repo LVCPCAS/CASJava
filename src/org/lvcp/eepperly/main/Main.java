@@ -14,22 +14,18 @@ public class Main {
 	public static void main(String[] args) {
 		DefaultSimplifier simplifier = new DefaultSimplifier();
 		List<Expr> listContainingX = new ArrayList<>();
-		listContainingX.add(X);
-		List<Expr> prodTerms = new ArrayList<>();
-		prodTerms.add(X);
-		prodTerms.add(new EToThePowerOf(listContainingX));
-		Expr prodExpr = new Product(prodTerms);
-		List<Expr> sumTerms = new ArrayList<>();
-		sumTerms.add(prodExpr);
-		sumTerms.add(Expr.MINUS_ONE);
-		Expr myExpr = new Sum(sumTerms);
-		System.out.println(myExpr);
-		System.out.println(myExpr.differentiate());
-		System.out.println(simplifier.simplify(myExpr.differentiate()));
-		System.out.println(myExpr.findZero(1));
-		//System.out.println(myExpr.differentiate().differentiate());
-		/*Expr myExpr = new EToThePowerOf(listContainingX);
-		System.out.println(myExpr);
-		System.out.println(myExpr.differentiate());*/
+		listContainingX.add(X); //define a simple list containing the variable x
+
+		List<Expr> myList = new ArrayList<>();
+		myList.add(Expr.MINUS_ONE);
+		myList.add(X);
+		myList.add(new Sine(listContainingX));
+		Expr myExpr = new Product(myList);
+
+		System.out.println("EXPRESSION: "+myExpr);
+		System.out.println("EXPRESSION SIMPLIFIED: "+simplifier.simplify(myExpr));
+		System.out.println("EXPRESSION DIFFERENTIATED: "+myExpr.differentiate());
+		System.out.println("EXPRESSION DIFFERENTIATED THEN SIMPLIFIED: "+simplifier.simplify(myExpr.differentiate()));
+		System.out.println("ZEROS: "+myExpr.findZero(1.0));
 	}
 }

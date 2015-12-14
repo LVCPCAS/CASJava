@@ -30,7 +30,8 @@ public class DefaultSimplifier extends AbstractSimplifier {
 				}
 			}
 			NumConstant constantTerm = NumConstant.product(numTerms);
-			if (!Expr.ONE.equals(constantTerm)) args.add(constantTerm);
+			if (Expr.ZERO.equals(constantTerm)) return Expr.ZERO;
+			else if (!Expr.ONE.equals(constantTerm)) args.add(constantTerm);
 			if (args.size()==1) return args.get(0);
 			return (new Product(args));
 		}

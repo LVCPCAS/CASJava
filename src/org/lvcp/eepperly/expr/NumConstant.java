@@ -20,6 +20,11 @@ public class NumConstant extends Expr {
 		this.value = value;
 	}
 
+	public NumConstant(double value){
+		super(new ArrayList<>());
+		this.value = value;
+	}
+
 	public Expr differentiate(){
 		return Expr.ZERO;
 	}

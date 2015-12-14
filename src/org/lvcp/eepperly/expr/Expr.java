@@ -14,6 +14,8 @@ public abstract class Expr {
 	public final static Expr ZERO = new NumConstant(new ArrayList<Expr>(),0.0);
 	public final static Expr ONE = new NumConstant(new ArrayList<Expr>(),1.0);
 	public final static Expr MINUS_ONE = new NumConstant(new ArrayList<Expr>(),-1.0);
+	public final static Expr TWO = new NumConstant(new ArrayList<Expr>(),2.0);
+
 	public abstract Expr differentiate();
 
 	public List<Expr> getArguments() {

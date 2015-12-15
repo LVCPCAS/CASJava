@@ -6,8 +6,8 @@ import java.util.List;
 /**
  * Created by eepperly16 on 12/14/15.
  */
-public class Arcosine extends Expr {
-	public Arcosine(List<Expr> arguments) {
+public class Arccosine extends Expr {
+	public Arccosine(List<Expr> arguments) {
 		super(arguments);
 	}
 	public Expr differentiate(){

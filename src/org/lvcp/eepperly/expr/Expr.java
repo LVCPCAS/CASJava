@@ -45,4 +45,14 @@ public abstract class Expr {
 	public Expr simplify(){
 		return simplifier.simplify(this);
 	}
+
+	public double defIntegral(double a,double b,double dx){
+		double integral = this.evaluate(a) + this.evaluate(b);
+		boolean odd = true;
+		for (double x = a;x<b;x+=dx){
+			integral += (odd ? 4 : 2)*this.evaluate(x);
+			odd = !odd;
+		}
+		return integral*dx/3;
+	}
 }

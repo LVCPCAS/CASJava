@@ -27,5 +27,6 @@ public class Main {
 		System.out.println("EXPRESSION DIFFERENTIATED: "+myExpr.differentiate());
 		System.out.println("EXPRESSION DIFFERENTIATED THEN SIMPLIFIED: "+simplifier.simplify(myExpr.differentiate()));
 		System.out.println("ZEROS: "+myExpr.findZero(1.0));
+		System.out.println("INTEGRAL FROM ZERO TO ONEN: "+myExpr.defIntegral(0.0,1.0,0.001));
 	}
 }

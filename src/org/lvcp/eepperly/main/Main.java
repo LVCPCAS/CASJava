@@ -18,7 +18,7 @@ public class Main {
 
 		List<Expr> myList = new ArrayList<>();
 		myList.add(Expr.MINUS_ONE);
-		myList.add(X);
+		myList.add(new Arctangent(listContainingX))I;
 		myList.add(new Arcosine(listContainingX));
 		Expr myExpr = new Product(myList);
 
@@ -26,7 +26,7 @@ public class Main {
 		System.out.println("EXPRESSION SIMPLIFIED: "+simplifier.simplify(myExpr));
 		System.out.println("EXPRESSION DIFFERENTIATED: "+myExpr.differentiate());
 		System.out.println("EXPRESSION DIFFERENTIATED THEN SIMPLIFIED: "+simplifier.simplify(myExpr.differentiate()));
-		System.out.println("ZEROS: "+myExpr.findZero(1.0));
-		System.out.println("INTEGRAL FROM ZERO TO ONEN: "+myExpr.defIntegral(0.0,1.0,0.001));
+		System.out.println("ZEROS: "+myExpr.findZero(0.57));
+		System.out.println("INTEGRAL FROM ZERO TO ONE: "+myExpr.defIntegral(0.0,1.0,0.001));
 	}
 }

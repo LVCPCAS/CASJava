@@ -18,7 +18,7 @@ public class Main {
 
 		List<Expr> myList = new ArrayList<>();
 		myList.add(Expr.MINUS_ONE);
-		myList.add(new Arctangent(listContainingX))I;
+		myList.add(new Arctangent(listContainingX));
 		myList.add(new Arcosine(listContainingX));
 		Expr myExpr = new Product(myList);
 

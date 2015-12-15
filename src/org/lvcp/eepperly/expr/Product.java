@@ -42,6 +42,12 @@ public class Product extends Expr {
 		prodTerms.add(Exponential.unitaryMultInv(denominator));
 		return (new Product(prodTerms));
 	}
+	public static Product unitaryNegation(Expr expression){
+		List<Expr> prodTerms = new ArrayList<>();
+		prodTerms.add(expression);
+		prodTerms.add(Expr.MINUS_ONE);
+		return (new Product(prodTerms));
+	}
 	public String toString(){
 		String str = "";
 		Iterator<Expr> itr = arguments.iterator();

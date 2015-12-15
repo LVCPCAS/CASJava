@@ -18,7 +18,7 @@ public class Arcsine extends Expr {
 		Expr argSquared = new Exponential(argSquaredList);
 		List<Expr> sumList = new ArrayList<>();
 		sumList.add(Expr.ONE);
-		sumList.add(argSquared);
+		sumList.add(Product.unitaryNegation(argSquared));
 		Expr sum = new Sum(sumList);
 		List<Expr> toTheMinusOneHalfList = new ArrayList<>();
 		toTheMinusOneHalfList.add(sum);

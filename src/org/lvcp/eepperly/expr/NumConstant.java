@@ -7,7 +7,7 @@ import java.util.List;
 /**
  * Created by eepperly16 on 12/11/15.
  */
-public class NumConstant extends Expr {
+public class NumConstant extends Value {
 	private double value;
 
 	public NumConstant(List<Expr> arguments) {

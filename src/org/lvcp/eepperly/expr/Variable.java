@@ -5,7 +5,7 @@ import java.util.List;
 /**
  * Created by eepperly16 on 12/11/15.
  */
-public class Variable extends Expr {
+public class Variable extends Value {
 	private String varName;
 	public Variable(List<Expr> arguments) {
 		super(arguments);

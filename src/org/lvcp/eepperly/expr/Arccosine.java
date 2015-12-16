@@ -6,7 +6,7 @@ import java.util.List;
 /**
  * Created by eepperly16 on 12/14/15.
  */
-public class Arccosine extends Expr {
+public class Arccosine extends UnOp {
 	public Arccosine(List<Expr> arguments) {
 		super(arguments);
 	}

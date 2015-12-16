@@ -6,7 +6,7 @@ import java.util.List;
 /**
  * Created by eepperly16 on 12/14/15.
  */
-public class Cosine extends Expr {
+public class Cosine extends UnOp {
 	public Cosine(List<Expr> arguments) {
 		super(arguments);
 	}

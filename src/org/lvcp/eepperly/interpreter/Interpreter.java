@@ -10,20 +10,12 @@ import java.util.List;
  * Created by eepperly16 on 12/14/15.
  */
 public class Interpreter {
-	/*private final String[] BIN_OPS_ARRAY = {"+","*","/","-","^"};
-	private final String[] UN_OPS_ARRAY = {"sin","cos","tan","ln","exp"};
-	private List<String> binOps;
-	private List<String> unOps;
+	private static final String[] BIN_OPS_ARRAY = {"+","*","/","-","^"};
+	private static final String[] UN_OPS_ARRAY = {"sin","cos","tan","ln","exp"};
+	private static List<String> binOps = new ArrayList<String>(Arrays.asList(BIN_OPS_ARRAY));
+	private static List<String> unOps = new ArrayList<String>(Arrays.asList(UN_OPS_ARRAY));
 
-	public Interpreter() {
-		binOps = new ArrayList<String>(Arrays.asList(BIN_OPS_ARRAY));
-		unOps = new ArrayList<String>(Arrays.asList(UN_OPS_ARRAY));
-	}
+	private String text;
 
-	public static Tree<String> stringToTree(String str){
-		String currentExpr = "";
-		for (int i=0;i<str.length();i++){
 
-		}
-	}*/
 }

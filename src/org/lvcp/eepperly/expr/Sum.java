@@ -7,7 +7,7 @@ import java.util.List;
 /**
  * Created by eepperly16 on 12/11/15.
  */
-public class Sum extends Expr{
+public class Sum extends BinOp {
 
 	public Expr differentiate(){
 		List returnTerms = new ArrayList<>();

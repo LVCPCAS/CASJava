@@ -6,7 +6,7 @@ import java.util.List;
 /**
  * Created by eepperly16 on 12/14/15.
  */
-public class Arctangent extends Expr {
+public class Arctangent extends UnOp {
 	public Arctangent(List<Expr> arguments) {
 		super(arguments);
 	}

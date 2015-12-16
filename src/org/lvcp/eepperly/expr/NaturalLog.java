@@ -6,7 +6,7 @@ import java.util.List;
 /**
  * Created by eepperly16 on 12/11/15.
  */
-public class NaturalLog extends Expr {
+public class NaturalLog extends UnOp {
 	public NaturalLog(List<Expr> arguments) {
 		super(arguments);
 	}

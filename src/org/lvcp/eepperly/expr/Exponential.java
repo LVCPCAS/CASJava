@@ -6,7 +6,7 @@ import java.util.List;
 /**
  * Created by eepperly16 on 12/11/15.
  */
-public class Exponential extends Expr {
+public class Exponential extends BinOp {
 	public Exponential(List<Expr> arguments) {
 		super(arguments);
 	}

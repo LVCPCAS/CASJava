@@ -7,7 +7,7 @@ import java.util.List;
 /**
  * Created by eepperly16 on 12/11/15.
  */
-public class Product extends Expr {
+public class Product extends BinOp {
 	public Product(List<Expr> arguments) {
 		super(arguments);
 	}

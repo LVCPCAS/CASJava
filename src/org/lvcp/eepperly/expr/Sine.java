@@ -6,7 +6,7 @@ import java.util.List;
 /**
  * Created by eepperly16 on 12/14/15.
  */
-public class Sine extends Expr {
+public class Sine extends UnOp {
 	public Sine(List<Expr> arguments) {
 		super(arguments);
 	}

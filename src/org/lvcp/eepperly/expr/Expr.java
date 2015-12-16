@@ -24,6 +24,11 @@ public abstract class Expr {
 
 	public abstract double evaluate(double value);
 
+	public Expr() {
+		this.arguments = new ArrayList<>();
+		this.simplifier = AbstractSimplifier.TRIVIAL_SIMPLIFIER;
+	}
+
 	public Expr(List<Expr> arguments) {
 		this.arguments = arguments;
 		this.simplifier = AbstractSimplifier.TRIVIAL_SIMPLIFIER;

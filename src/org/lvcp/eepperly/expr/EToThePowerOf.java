@@ -6,7 +6,7 @@ import java.util.List;
 /**
  * Created by eepperly16 on 12/11/15.
  */
-public class EToThePowerOf extends Expr {
+public class EToThePowerOf extends UnOp {
 	public EToThePowerOf(List<Expr> arguments) {
 		super(arguments);
 	}

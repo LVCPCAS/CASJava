@@ -33,7 +33,12 @@ public abstract class Expr {
 		this.arguments = arguments;
 		this.simplifier = simplifier;
 	}
+	public double optimize(double guess){
+		return differentiate().findZero(guess);
+	}
+	public boolean isMin(double x){
 
+	}
 	public double findZero(double guess){
 		Expr iterTerm = Product.quotient(this,this.differentiate());
 		while (Math.abs(evaluate(guess))>1e-8){

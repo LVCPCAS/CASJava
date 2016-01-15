@@ -11,10 +11,10 @@ public class Arccosine extends UnOp {
 		super(arguments);
 	}
 	public Expr differentiate(){
-		List <Expr> arcosineList = new ArrayList<>();
-		arcosineList.add(arguments.get(0));
-		arcosineList.add(Expr.TWO);
-		Expr argSquared= new Exponential(arcosineList);
+		List <Expr> arccosineList = new ArrayList<>();
+		arccosineList.add(arguments.get(0));
+		arccosineList.add(Expr.TWO);
+		Expr argSquared= new Exponential(arccosineList);
 		List <Expr> sumList = new ArrayList<>();
 		sumList.add(Expr.ONE);
 		sumList.add(Product.unitaryNegation(argSquared));

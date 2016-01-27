@@ -15,7 +15,7 @@ public class Arcsine extends UnOp {
 		List<Expr> argSquaredList = new ArrayList<>();
 		argSquaredList.add(arguments.get(0));
 		argSquaredList.add(Expr.TWO);
-		Expr argSquared = new Exponential(argSquaredList);
+		Expr argSquared = new Power(argSquaredList);
 		List<Expr> sumList = new ArrayList<>();
 		sumList.add(Expr.ONE);
 		sumList.add(Product.unitaryNegation(argSquared));
@@ -23,7 +23,7 @@ public class Arcsine extends UnOp {
 		List<Expr> toTheMinusOneHalfList = new ArrayList<>();
 		toTheMinusOneHalfList.add(sum);
 		toTheMinusOneHalfList.add(new NumConstant(-0.5));
-		Expr toTheMinusOneHalf = new Exponential(toTheMinusOneHalfList);
+		Expr toTheMinusOneHalf = new Power(toTheMinusOneHalfList);
 		List<Expr> prodList = new ArrayList<>();
 		prodList.add(arguments.get(0).differentiate());
 		prodList.add(toTheMinusOneHalf);

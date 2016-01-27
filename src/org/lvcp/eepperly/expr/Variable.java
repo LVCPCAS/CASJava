@@ -5,15 +5,10 @@ import java.util.List;
 /**
  * Created by eepperly16 on 12/11/15.
  */
-public class Variable extends Value {
+public class Variable implements Expr {
 	private String varName;
 	public Variable(List<Expr> arguments) {
-		super(arguments);
 		varName = "X";
-	}
-	public Variable(List<Expr> arguments,String varName) {
-		super(arguments);
-		this.varName = varName;
 	}
 
 	public Expr differentiate(){

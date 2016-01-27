@@ -8,8 +8,8 @@ import java.util.List;
  * Created by eepperly16 on 12/11/15.
  */
 public class Product extends BinOp {
-	public Product(List<Expr> arguments) {
-		super(arguments);
+	public Product(Expr factor1, Expr factor2) {
+		super(factor1, factor2);
 	}
 	public Expr differentiate(){
 		List<Expr> addTerms = new ArrayList<>();
@@ -23,7 +23,7 @@ public class Product extends BinOp {
 					prodTerms.add(arguments.get(j));
 				}
 			}
-			addTerms.add(new Product(prodTerms));
+			addTerms.add(prodTerms.stream().reduce(Expr.ONE, (a, b) -> new Product(a, b)));
 			prodTerms = new ArrayList<>();
 		}
 		return (new Sum(addTerms));
@@ -37,16 +37,10 @@ public class Product extends BinOp {
 		return prod;
 	}
 	public static Product quotient(Expr numerator, Expr denominator){
-		List<Expr> prodTerms = new ArrayList<>();
-		prodTerms.add(numerator);
-		prodTerms.add(Exponential.unitaryMultInv(denominator));
-		return (new Product(prodTerms));
+		return new Product(numerator, Power.unitaryMultInv(denominator));
 	}
 	public static Product unitaryNegation(Expr expression){
-		List<Expr> prodTerms = new ArrayList<>();
-		prodTerms.add(expression);
-		prodTerms.add(Expr.MINUS_ONE);
-		return (new Product(prodTerms));
+		return new Product(expression, Expr.MINUS_ONE);
 	}
 	public String toString(){
 		String str = "";

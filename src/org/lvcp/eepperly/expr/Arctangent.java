@@ -15,7 +15,7 @@ public class Arctangent extends UnOp {
 		List<Expr> argSquaredList = new ArrayList<>();
 		argSquaredList.add(arguments.get(0));
 		argSquaredList.add(Expr.TWO);
-		Expr argSquared = new Exponential(argSquaredList);
+		Expr argSquared = new Power(argSquaredList);
 		List<Expr> sumList = new ArrayList<>();
 		sumList.add(Expr.ONE);
 		sumList.add(argSquared);
@@ -23,7 +23,7 @@ public class Arctangent extends UnOp {
 		List<Expr> toTheMinusOneList = new ArrayList<>();
 		toTheMinusOneList.add(sum);
 		toTheMinusOneList.add(Expr.MINUS_ONE);
-		Expr toTheMinusOne = new Exponential(toTheMinusOneList);
+		Expr toTheMinusOne = new Power(toTheMinusOneList);
 		List<Expr> prodList = new ArrayList<>();
 		prodList.add(arguments.get(0).differentiate());
 		prodList.add(toTheMinusOne);

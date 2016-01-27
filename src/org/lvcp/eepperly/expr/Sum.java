@@ -10,16 +10,11 @@ import java.util.List;
 public class Sum extends BinOp {
 
 	public Expr differentiate(){
-		List returnTerms = new ArrayList<>();
-		Iterator<Expr> itr = arguments.iterator();
-		while (itr.hasNext()) {
-			returnTerms.add(itr.next().differentiate());
-		}
-		return (new Sum(returnTerms));
+		return new Sum(arguments.get(0).differentiate(), arguments.get(1).differentiate());
 	}
 
-	public Sum(List<Expr> arguments) {
-		super(arguments);
+	public Sum(Expr addend, Expr augend) {
+		super(addend, augend);
 	}
 
 	public double evaluate(double value){

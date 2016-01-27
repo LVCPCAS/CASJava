@@ -14,7 +14,7 @@ public class Arccosine extends UnOp {
 		List <Expr> arccosineList = new ArrayList<>();
 		arccosineList.add(arguments.get(0));
 		arccosineList.add(Expr.TWO);
-		Expr argSquared= new Exponential(arccosineList);
+		Expr argSquared= new Power(arccosineList);
 		List <Expr> sumList = new ArrayList<>();
 		sumList.add(Expr.ONE);
 		sumList.add(Product.unitaryNegation(argSquared));
@@ -22,7 +22,7 @@ public class Arccosine extends UnOp {
 		List <Expr> toTheMinusOneHalfList = new ArrayList<>();
 		toTheMinusOneHalfList.add(sum);
 		toTheMinusOneHalfList.add(new NumConstant(-0.5));
-		Expr toTheMinusOneHalf = new Exponential(toTheMinusOneHalfList);
+		Expr toTheMinusOneHalf = new Power(toTheMinusOneHalfList);
 		List <Expr> prodList = new ArrayList<>();
 		prodList.add(toTheMinusOneHalf);
 		prodList.add(arguments.get(0).differentiate());
@@ -35,7 +35,7 @@ public class Arccosine extends UnOp {
 	}
 
 	public String toString(){
-		return ("arcos("+arguments.get(0).toString()+")");
+		return ("arccos("+arguments.get(0).toString()+")");
 	}
 
 }

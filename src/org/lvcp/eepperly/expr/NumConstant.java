@@ -7,21 +7,10 @@ import java.util.List;
 /**
  * Created by eepperly16 on 12/11/15.
  */
-public class NumConstant extends Value {
+public class NumConstant implements Expr {
 	private double value;
 
-	public NumConstant(List<Expr> arguments) {
-		super(arguments);
-		value=0;
-	}
-
-	public NumConstant(List<Expr> arguments, double value) {
-		super(arguments);
-		this.value = value;
-	}
-
 	public NumConstant(double value){
-		super(new ArrayList<>());
 		this.value = value;
 	}
 
@@ -54,7 +43,7 @@ public class NumConstant extends Value {
 		while (itr.hasNext()){
 			prod *= itr.next().getValue();
 		}
-		return (new NumConstant(new ArrayList<>(),prod));
+		return (new NumConstant(prod));
 	}
 
 	public static NumConstant sum (List<NumConstant> numConstants){
@@ -64,6 +53,6 @@ public class NumConstant extends Value {
 		while (itr.hasNext()){
 			sum += itr.next().getValue();
 		}
-		return (new NumConstant(new ArrayList<>(),sum));
+		return (new NumConstant(sum));
 	}
 }

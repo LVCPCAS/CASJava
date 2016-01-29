@@ -1,6 +1,7 @@
 package org.lvcp.eepperly.expr;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 /**
@@ -11,7 +12,7 @@ public abstract class UnOp implements Expr {
 
 	@Override
 	public List<Expr> getArguments() {
-		return arguments;
+		return Collections.unmodifiableList(arguments);
 	}
 
 	public UnOp(Expr arg1){

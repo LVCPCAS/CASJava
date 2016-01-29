@@ -12,29 +12,11 @@ public class Product extends BinOp {
 		super(factor1, factor2);
 	}
 	public Expr differentiate(){
-		List<Expr> addTerms = new ArrayList<>();
-		List<Expr> prodTerms = new ArrayList<>();
-		for (int i=0;i<arguments.size();i++) {
-			for (int j=0;j<arguments.size();j++) {
-				if (i==j){
-					prodTerms.add(arguments.get(j).differentiate());
-				}
-				else{
-					prodTerms.add(arguments.get(j));
-				}
-			}
-			addTerms.add(prodTerms.stream().reduce(Expr.ONE, (a, b) -> new Product(a, b)));
-			prodTerms = new ArrayList<>();
-		}
-		return (new Sum(addTerms));
+		return new Sum(new Product(arguments.get(0).differentiate(), arguments.get(1)),
+		               new Product(arguments.get(0), arguments.get(1).differentiate()));
 	}
 	public double evaluate(double value){
-		double prod = 1;
-		Iterator<Expr> itr = arguments.iterator();
-		while (itr.hasNext()){
-			prod *= itr.next().evaluate(value);
-		}
-		return prod;
+		return arguments.get(0).evaluate(value) * arguments.get(1).evaluate(value);
 	}
 	public static Product quotient(Expr numerator, Expr denominator){
 		return new Product(numerator, Power.unitaryMultInv(denominator));

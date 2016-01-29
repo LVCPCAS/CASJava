@@ -7,15 +7,12 @@ import java.util.List;
  * Created by eepperly16 on 12/11/15.
  */
 public class Exponential extends UnOp {
-	public Exponential(List<Expr> arguments) {
-		super(arguments);
+	public Exponential(Expr power) {
+		super(power);
 	}
 
 	public Expr differentiate() {
-		List<Expr> prodTerms = new ArrayList<>();
-		prodTerms.add(arguments.get(0).differentiate());
-		prodTerms.add(new Exponential(arguments));
-		return (new Product(prodTerms));
+		return new Product(arguments.get(0), this);
 	}
 
 	public double evaluate(double value){

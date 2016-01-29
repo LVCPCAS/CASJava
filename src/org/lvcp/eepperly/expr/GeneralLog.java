@@ -10,15 +10,28 @@ public class GeneralLog extends BinOp {
 		super(yield, base);
 	}
 	public Expr differentiate(){
-		List <Expr> expTerms = new ArrayList<>();
-		expTerms.add(arguments.get(0));
-		expTerms.add(Expr.MINUS_ONE);
-		Expr expTerm= new Power(expTerms);
-		List <Expr> prodTerms=new ArrayList<>();
-		prodTerms.add(arguments.get(0).differentiate());
-		prodTerms.add(expTerm);
-		prodTerms.add( new NumConstant( 1/Math.log(arguments.get(1).evaluate(0)) ) );
-		return (new Product(prodTerms));
+		return new Sum(
+			new Product(
+				arguments.get(1).differentiate(),
+				Power.unitaryMultInv(new Product(
+					arguments.get(1).differentiate(),
+					new NaturalLog(arguments.get(0))
+				))
+			),
+			Product.unitaryNegation(new Product(
+				new Product(
+					arguments.get(0).differentiate(),
+					new NaturalLog(arguments.get(1))
+				),
+				Power.unitaryMultInv(new Product(
+					arguments.get(0),
+					new Power(
+						new NaturalLog(arguments.get(0)),
+						Expr.TWO
+					)
+				))
+			))
+		);
 	}
 	public double evaluate(double value) {
 		return   Math.log(arguments.get(0).evaluate(value))

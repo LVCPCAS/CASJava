@@ -34,7 +34,7 @@ public class Power extends BinOp {
 	public String toString(){
 		return (arguments.get(0).toString()+"^"+arguments.get(1).toString());
 	}
-	public static Power unitaryMultInv(Expr expression){
+	public static Power unaryMultInv(Expr expression){
 		return new Power(expression, Expr.MINUS_ONE);
 	}
 }

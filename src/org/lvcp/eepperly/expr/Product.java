@@ -21,7 +21,7 @@ public class Product extends BinOp {
 	public static Product quotient(Expr numerator, Expr denominator){
 		return new Product(numerator, Power.unitaryMultInv(denominator));
 	}
-	public static Product unitaryNegation(Expr expression){
+	public static Product unaryNegation(Expr expression){
 		return new Product(expression, Expr.MINUS_ONE);
 	}
 	public String toString(){

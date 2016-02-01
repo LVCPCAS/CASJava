@@ -7,18 +7,43 @@ import java.util.List;
  */
 public class Variable implements Expr {
 	private String varName;
-	public Variable(List<Expr> arguments) {
+	public Variable() {
 		varName = "X";
 	}
+	public Variable(String varName){
+		this.varName = varName;
+	}
 
+	@Override
 	public Expr differentiate(){
 		return Expr.ONE;
 	}
+
+	@Override
 	public double evaluate(double value){ return value; }
+
+	@Override
 	public String toString(){
 		return varName;
 	}
-	public boolean equals(Object obj){
-		return obj instanceof Variable;
+
+	public String getVarName() {
+		return varName;
+	}
+
+	@Override
+	public boolean equals(Object o) {
+		if (this == o) return true;
+		if (o == null || getClass() != o.getClass()) return false;
+
+		Variable variable = (Variable) o;
+
+		return !(varName != null ? !varName.equals(variable.varName) : variable.varName != null);
+
+	}
+
+	@Override
+	public int hashCode() {
+		return varName != null ? varName.hashCode() : 0;
 	}
 }

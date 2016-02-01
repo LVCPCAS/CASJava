@@ -13,17 +13,17 @@ public class GeneralLog extends BinOp {
 		return new Sum(
 			new Product(
 				arguments.get(1).differentiate(),
-				Power.unitaryMultInv(new Product(
+				Power.unaryMultInv(new Product(
 					arguments.get(1).differentiate(),
 					new NaturalLog(arguments.get(0))
 				))
 			),
-			Product.unitaryNegation(new Product(
+			Product.unaryNegation(new Product(
 				new Product(
 					arguments.get(0).differentiate(),
 					new NaturalLog(arguments.get(1))
 				),
-				Power.unitaryMultInv(new Product(
+				Power.unaryMultInv(new Product(
 					arguments.get(0),
 					new Power(
 						new NaturalLog(arguments.get(0)),

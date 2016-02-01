@@ -19,7 +19,7 @@ public class Product extends BinOp {
 		return arguments.get(0).evaluate(value) * arguments.get(1).evaluate(value);
 	}
 	public static Product quotient(Expr numerator, Expr denominator){
-		return new Product(numerator, Power.unitaryMultInv(denominator));
+		return new Product(numerator, Power.unaryMultInv(denominator));
 	}
 	public static Product unaryNegation(Expr expression){
 		return new Product(expression, Expr.MINUS_ONE);

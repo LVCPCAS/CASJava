@@ -33,7 +33,7 @@ public class DefaultSimplifier extends AbstractSimplifier {
 			if (Expr.ZERO.equals(constantTerm)) return Expr.ZERO;
 			else if (!Expr.ONE.equals(constantTerm)) args.add(constantTerm);
 			if (args.size()==1) return args.get(0);
-			return (new Product(args)); //returns simplified product
+			return args.stream().reduce(Expr.ONE, Product::new); //returns simplified product
 		}
 		else if (expression instanceof Sum){ //combines numerical terms, flattens sums
 			List<NumConstant> numTerms = new ArrayList<>();
@@ -52,7 +52,7 @@ public class DefaultSimplifier extends AbstractSimplifier {
 			NumConstant constantTerm = NumConstant.sum(numTerms);
 			if (!Expr.ZERO.equals(constantTerm)) args.add(constantTerm);
 			if (args.size()==1) return args.get(0);
-			return (new Sum(args));
+			return args.stream().reduce(Expr.ZERO, Sum::new);
 		}
 		else{ //if not sum or product return self
 			return expression;

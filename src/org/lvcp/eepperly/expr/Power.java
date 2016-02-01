@@ -20,7 +20,7 @@ public class Power extends BinOp {
 				new Product(
 					new Product(
 						arguments.get(1),
-						Power.unitaryMultInv(arguments.get(0))
+						Power.unaryMultInv(arguments.get(0))
 					),
 					arguments.get(0).differentiate()
 				)

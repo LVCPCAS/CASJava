@@ -1,9 +1,6 @@
 package org.lvcp.eepperly.expr;
 
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.Iterator;
-import java.util.List;
+import java.util.*;
 
 /**
  * Created by eepperly16 on 12/11/15.
@@ -15,10 +12,8 @@ public class Product implements Expr {
 		return Collections.unmodifiableList(arguments);
 	}
 
-	public Product(Expr factor1, Expr factor2){
-		arguments = new ArrayList<>();
-		arguments.add(factor1);
-		arguments.add(factor2);
+	public Product(Expr...factor){
+		arguments = Arrays.asList(factor);
 	}
 
 	public Product(List<Expr> args){

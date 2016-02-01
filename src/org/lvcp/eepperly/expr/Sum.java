@@ -1,9 +1,6 @@
 package org.lvcp.eepperly.expr;
 
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.Iterator;
-import java.util.List;
+import java.util.*;
 
 /**
  * Created by eepperly16 on 12/11/15.
@@ -17,10 +14,8 @@ public class Sum implements Expr {
 		return Collections.unmodifiableList(arguments);
 	}
 
-	public Sum(Expr addend, Expr augend){
-		arguments = new ArrayList<>();
-		arguments.add(addend);
-		arguments.add(augend);
+	public Sum(Expr...summands){
+		arguments = Arrays.asList(summands);
 	}
 
 	public Sum(List<Expr> summands){

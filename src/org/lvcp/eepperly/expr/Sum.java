@@ -1,20 +1,38 @@
 package org.lvcp.eepperly.expr;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.Iterator;
 import java.util.List;
 
 /**
  * Created by eepperly16 on 12/11/15.
  */
-public class Sum extends BinOp {
+public class Sum implements Expr {
 
-	public Expr differentiate(){
-		return new Sum(arguments.get(0).differentiate(), arguments.get(1).differentiate());
+	protected List<Expr> arguments;
+
+	@Override
+	public List<Expr> getArguments() {
+		return Collections.unmodifiableList(arguments);
 	}
 
-	public Sum(Expr addend, Expr augend) {
-		super(addend, augend);
+	public Sum(Expr addend, Expr augend){
+		arguments = new ArrayList<>();
+		arguments.add(addend);
+		arguments.add(augend);
+	}
+
+	public Sum(List<Expr> summands){
+		arguments = summands;
+	}
+
+	public Expr differentiate(){
+		List<Expr> diffTerms = new ArrayList<>();
+		for (int i=0;i<arguments.size();i++){
+			diffTerms.add(arguments.get(i).differentiate());
+		}
+		return new Sum(diffTerms);
 	}
 
 	public double evaluate(double value){

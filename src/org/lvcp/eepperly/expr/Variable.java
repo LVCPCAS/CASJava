@@ -1,6 +1,7 @@
 package org.lvcp.eepperly.expr;
 
 import java.util.List;
+import java.util.Map;
 
 /**
  * Created by eepperly16 on 12/11/15.
@@ -45,5 +46,10 @@ public class Variable implements Expr {
 	@Override
 	public int hashCode() {
 		return varName != null ? varName.hashCode() : 0;
+	}
+
+	@Override
+	public Expr substitute(Map<Variable, Expr> subMap){
+		return subMap.getOrDefault(this, this);
 	}
 }

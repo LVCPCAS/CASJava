@@ -3,6 +3,7 @@ package org.lvcp.eepperly.expr;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
+import java.util.Map;
 
 /**
  * Created by eepperly16 on 12/11/15.
@@ -54,5 +55,9 @@ public class NumConstant implements Expr {
 			sum += itr.next().getValue();
 		}
 		return (new NumConstant(sum));
+	}
+	@Override
+	public Expr substitute(Map<Variable, Expr> subMap){
+		return this;
 	}
 }

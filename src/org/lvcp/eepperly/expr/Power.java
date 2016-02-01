@@ -2,6 +2,7 @@ package org.lvcp.eepperly.expr;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 
 /**
  * Created by eepperly16 on 12/11/15.
@@ -36,5 +37,10 @@ public class Power extends BinOp {
 	}
 	public static Power unaryMultInv(Expr expression){
 		return new Power(expression, Expr.MINUS_ONE);
+	}
+	@Override
+	public Expr substitute(Map<Variable, Expr> subMap){
+		return new Power(getArguments().get(0).substitute(subMap),
+				getArguments().get(1).substitute(subMap));
 	}
 }

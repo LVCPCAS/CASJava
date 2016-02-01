@@ -49,4 +49,13 @@ public class Product implements Expr {
 		}
 		return str+")";
 	}
+	@Override
+	public Expr substitute(Map<Variable, Expr> subMap){
+		Iterator<Expr> itr = arguments.iterator();
+		List<Expr> subTerms = new ArrayList<>();
+		while (itr.hasNext()){
+			subTerms.add(itr.next().substitute(subMap));
+		}
+		return new Product(subTerms);
+	}
 }

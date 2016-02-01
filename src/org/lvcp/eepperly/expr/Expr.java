@@ -4,12 +4,13 @@ import org.lvcp.eepperly.simplify.AbstractSimplifier;
 
 import java.util.Collections;
 import java.util.List;
+import java.util.Map;
 
 /**
  * @author Dimitriye Danilovic
  * @since 1/22/16
  */
-public interface Expr {
+public interface Expr extends Cloneable {
 	Expr ZERO = new NumConstant(0.0);
 	Expr ONE = new NumConstant(1.0);
 	Expr MINUS_ONE = new NumConstant(-1.0);
@@ -22,6 +23,8 @@ public interface Expr {
 	}
 
 	double evaluate(double value);
+
+	Expr substitute(Map<Variable, Expr> map);
 
 	default double optimize(double guess){
 		return differentiate().findZero(guess);

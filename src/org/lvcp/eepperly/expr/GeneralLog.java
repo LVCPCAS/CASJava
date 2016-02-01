@@ -5,6 +5,8 @@ package org.lvcp.eepperly.expr;
  */
 import java.util.List;
 import java.util.ArrayList;
+import java.util.Map;
+
 public class GeneralLog extends BinOp {
 	public GeneralLog(Expr base, Expr yield) {
 		super(yield, base);
@@ -39,5 +41,11 @@ public class GeneralLog extends BinOp {
 	}
 	public String toString(){
 		return String.format("log_{%s}(%s)", arguments.get(1).toString(), arguments.get(0).toString());
+	}
+
+	@Override
+	public Expr substitute(Map<Variable, Expr> subMap){
+		return new GeneralLog(getArguments().get(0).substitute(subMap),
+				getArguments().get(1).substitute(subMap));
 	}
 }

@@ -7,20 +7,17 @@ import java.util.List;
  * Created by eepperly16 on 12/14/15.
  */
 public class Sine extends UnOp {
-	public Sine(List<Expr> arguments) {
-		super(arguments);
+	public Sine(Expr argument) {
+		super(argument);
 	}
 	public Expr differentiate(){
-		List<Expr> prodTerms = new ArrayList<>();
-		prodTerms.add(arguments.get(0).differentiate());
-		prodTerms.add(new Cosine(arguments));
-		return (new Product(prodTerms));
+		return (new Product(argument.differentiate(), new Cosine(argument)));
 	}
 	public double evaluate(double value){
-		return Math.sin(arguments.get(0).evaluate(value));
+		return Math.sin(argument.evaluate(value));
 	}
 
 	public String toString(){
-		return ("sin("+arguments.get(0).toString()+")");
+		return ("sin("+argument.toString()+")");
 	}
 }

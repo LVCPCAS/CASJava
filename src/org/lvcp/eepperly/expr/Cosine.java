@@ -7,21 +7,17 @@ import java.util.List;
  * Created by eepperly16 on 12/14/15.
  */
 public class Cosine extends UnOp {
-	public Cosine(List<Expr> arguments) {
-		super(arguments);
+	public Cosine(Expr argument) {
+		super(argument);
 	}
 	public Expr differentiate(){
-		List<Expr> prodTerms = new ArrayList<>();
-		prodTerms.add(Expr.MINUS_ONE);
-		prodTerms.add(arguments.get(0).differentiate());
-		prodTerms.add(new Sine(arguments));
-		return (new Product(prodTerms));
+		return (new Product(Expr.MINUS_ONE, argument.differentiate(), new Sine(argument)));
 	}
 	public double evaluate(double value){
-		return Math.cos(arguments.get(0).evaluate(value));
+		return Math.cos(argument.evaluate(value));
 	}
 
 	public String toString(){
-		return ("cos("+arguments.get(0).toString()+")");
+		return ("cos("+argument.toString()+")");
 	}
 }

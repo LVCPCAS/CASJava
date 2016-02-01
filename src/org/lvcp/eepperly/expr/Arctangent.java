@@ -7,35 +7,23 @@ import java.util.List;
  * Created by eepperly16 on 12/14/15.
  */
 public class Arctangent extends UnOp {
-	public Arctangent(List<Expr> arguments) {
-		super(arguments);
+	public Arctangent(Expr argument) {
+		super(argument);
 	}
 
 	public Expr differentiate(){
-		List<Expr> argSquaredList = new ArrayList<>();
-		argSquaredList.add(arguments.get(0));
-		argSquaredList.add(Expr.TWO);
-		Expr argSquared = new Power(argSquaredList);
-		List<Expr> sumList = new ArrayList<>();
-		sumList.add(Expr.ONE);
-		sumList.add(argSquared);
-		Expr sum = new Sum(sumList);
-		List<Expr> toTheMinusOneList = new ArrayList<>();
-		toTheMinusOneList.add(sum);
-		toTheMinusOneList.add(Expr.MINUS_ONE);
-		Expr toTheMinusOne = new Power(toTheMinusOneList);
-		List<Expr> prodList = new ArrayList<>();
-		prodList.add(arguments.get(0).differentiate());
-		prodList.add(toTheMinusOne);
-		return (new Product(prodList));
+		Expr argSquared = new Power(argument, Expr.TWO);
+		Expr sum = new Sum(Expr.ONE, argSquared);
+		Expr toTheMinusOne = new Power(argSquared, Expr.MINUS_ONE);
+		return (new Product(argument.differentiate(), toTheMinusOne));
 	}
 
 	public double evaluate(double value){
-		return Math.atan(arguments.get(0).evaluate(value));
+		return Math.atan(argument.evaluate(value));
 	}
 
 	public String toString(){
-		return ("arctan("+arguments.get(0).toString()+")");
+		return ("arctan("+argument.toString()+")");
 	}
 
 }

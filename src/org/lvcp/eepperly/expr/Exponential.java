@@ -12,14 +12,14 @@ public class Exponential extends UnOp {
 	}
 
 	public Expr differentiate() {
-		return new Product(arguments.get(0), this);
+		return new Product(argument, this);
 	}
 
 	public double evaluate(double value){
-		return Math.exp(arguments.get(0).evaluate(value));
+		return Math.exp(argument.evaluate(value));
 	}
 
 	public String toString(){
-		return ("exp("+arguments.get(0).toString()+")");
+		return ("exp("+argument.toString()+")");
 	}
 }

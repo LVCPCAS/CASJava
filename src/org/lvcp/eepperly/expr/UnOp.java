@@ -1,6 +1,7 @@
 package org.lvcp.eepperly.expr;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
 
@@ -8,15 +9,14 @@ import java.util.List;
  * Created by eepperly16 on 12/16/15.
  */
 public abstract class UnOp implements Expr {
-	protected List<Expr> arguments;
+	protected Expr argument;
 
 	@Override
 	public List<Expr> getArguments() {
-		return Collections.unmodifiableList(arguments);
+		return Arrays.asList(argument);
 	}
 
 	public UnOp(Expr arg1){
-		arguments = new ArrayList<>();
-		arguments.add(arg1);
+		argument = arg1;
 	}
 }

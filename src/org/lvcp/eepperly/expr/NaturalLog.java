@@ -11,12 +11,12 @@ public class NaturalLog extends UnOp {
 		super(argument);
 	}
 	public Expr differentiate(){
-		return (new Product(arguments.get(0).differentiate(), new Power(arguments.get(0), Expr.MINUS_ONE)));
+		return (new Product(argument.differentiate(), new Power(argument, Expr.MINUS_ONE)));
 	}
 	public double evaluate(double value){
-		return Math.log(arguments.get(0).evaluate(value));
+		return Math.log(argument.evaluate(value));
 	}
 	public String toString(){
-		return ("ln("+arguments.get(0).toString()+")");
+		return ("ln("+argument.toString()+")");
 	}
 }

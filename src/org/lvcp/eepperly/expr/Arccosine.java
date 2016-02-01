@@ -7,35 +7,23 @@ import java.util.List;
  * Created by eepperly16 on 12/14/15.
  */
 public class Arccosine extends UnOp {
-	public Arccosine(List<Expr> arguments) {
-		super(arguments);
+	public Arccosine(Expr argument) {
+		super(argument);
 	}
 	public Expr differentiate(){
 		List <Expr> arccosineList = new ArrayList<>();
-		arccosineList.add(arguments.get(0));
-		arccosineList.add(Expr.TWO);
-		Expr argSquared= new Power(arccosineList);
-		List <Expr> sumList = new ArrayList<>();
-		sumList.add(Expr.ONE);
-		sumList.add(Product.unitaryNegation(argSquared));
-		Expr sum = new Sum(sumList);
-		List <Expr> toTheMinusOneHalfList = new ArrayList<>();
-		toTheMinusOneHalfList.add(sum);
-		toTheMinusOneHalfList.add(new NumConstant(-0.5));
-		Expr toTheMinusOneHalf = new Power(toTheMinusOneHalfList);
-		List <Expr> prodList = new ArrayList<>();
-		prodList.add(toTheMinusOneHalf);
-		prodList.add(arguments.get(0).differentiate());
-		prodList.add(Expr.MINUS_ONE);
-		return new Product(prodList);
+		Expr argSquared= new Power(argument, Expr.TWO);
+		Expr sum = new Sum(Expr.ONE, Product.unaryNegation(argSquared));
+		Expr toTheMinusOneHalf = new Power(sum, new NumConstant(-0.5));
+		return new Product(toTheMinusOneHalf, argument.differentiate(), Expr.MINUS_ONE);
 	}
 
 	public double evaluate(double value){
-		return Math.acos(arguments.get(0).evaluate(value));
+		return Math.acos(argument.evaluate(value));
 	}
 
 	public String toString(){
-		return ("arccos("+arguments.get(0).toString()+")");
+		return ("arccos("+argument.toString()+")");
 	}
 
 }

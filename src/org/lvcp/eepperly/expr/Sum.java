@@ -1,5 +1,7 @@
 package org.lvcp.eepperly.expr;
 
+import org.lvcp.eepperly.exception.VariableNoValueException;
+
 import java.util.*;
 
 /**
@@ -30,15 +32,6 @@ public class Sum implements Expr {
 		return new Sum(diffTerms);
 	}
 
-	public double evaluate(double value){
-		double sum = 0;
-		Iterator<Expr> itr = arguments.iterator();
-		while (itr.hasNext()){
-			sum += itr.next().evaluate(value);
-		}
-		return sum;
-	}
-
 	public String toString(){
 		String str = "";
 		Iterator<Expr> itr = arguments.iterator();
@@ -56,5 +49,14 @@ public class Sum implements Expr {
 			subTerms.add(itr.next().substitute(subMap));
 		}
 		return new Sum(subTerms);
+	}
+	@Override
+	public double evaluate(Map<Variable, Double> evalMap) throws VariableNoValueException {
+		Iterator<Expr> itr = getArguments().iterator();
+		double sum = 0;
+		while (itr.hasNext()){
+			sum += itr.next().evaluate(evalMap);
+		}
+		return sum;
 	}
 }

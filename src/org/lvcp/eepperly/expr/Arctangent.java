@@ -1,5 +1,8 @@
 package org.lvcp.eepperly.expr;
 
+import org.lvcp.eepperly.exception.MultivariableException;
+import org.lvcp.eepperly.exception.VariableNoValueException;
+
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
@@ -12,15 +15,11 @@ public class Arctangent extends UnOp {
 		super(argument);
 	}
 
-	public Expr differentiate(){
+	public Expr differentiate(Variable withRespectTo) throws MultivariableException{
 		Expr argSquared = new Power(argument, Expr.TWO);
 		Expr sum = new Sum(Expr.ONE, argSquared);
 		Expr toTheMinusOne = new Power(argSquared, Expr.MINUS_ONE);
-		return (new Product(argument.differentiate(), toTheMinusOne));
-	}
-
-	public double evaluate(double value){
-		return Math.atan(argument.evaluate(value));
+		return (new Product(argument.differentiate(withRespectTo), toTheMinusOne));
 	}
 
 	public String toString(){
@@ -30,6 +29,11 @@ public class Arctangent extends UnOp {
 	@Override
 	public Expr substitute(Map<Variable, Expr> subMap){
 		return new Arctangent(argument.substitute(subMap));
+	}
+
+	@Override
+	public double evaluate(Map<Variable, Double> evalMap) throws VariableNoValueException {
+		return Math.atan(argument.evaluate(evalMap));
 	}
 
 }

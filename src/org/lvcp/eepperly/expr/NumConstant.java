@@ -1,5 +1,7 @@
 package org.lvcp.eepperly.expr;
 
+import org.lvcp.eepperly.exception.VariableNoValueException;
+
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
@@ -18,7 +20,6 @@ public class NumConstant implements Expr {
 	public Expr differentiate(){
 		return Expr.ZERO;
 	}
-	public double evaluate(double inputValue){ return value; };
 	public String toString(){
 		return (""+value);
 	}
@@ -60,4 +61,7 @@ public class NumConstant implements Expr {
 	public Expr substitute(Map<Variable, Expr> subMap){
 		return this;
 	}
+
+	@Override
+	public double evaluate(Map<Variable, Double> evalMap) throws VariableNoValueException {return value;}
 }

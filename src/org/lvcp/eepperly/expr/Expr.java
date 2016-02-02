@@ -1,5 +1,7 @@
 package org.lvcp.eepperly.expr;
 
+import org.lvcp.eepperly.exception.MultivariableException;
+import org.lvcp.eepperly.exception.VariableNoValueException;
 import org.lvcp.eepperly.simplify.AbstractSimplifier;
 
 import java.util.Collections;
@@ -16,17 +18,17 @@ public interface Expr extends Cloneable {
 	Expr MINUS_ONE = new NumConstant(-1.0);
 	Expr TWO = new NumConstant(2.0);
 
-	Expr differentiate();
+	Expr differentiate(Variable withRespectTo) throws MultivariableException;
 
 	default List<Expr> getArguments() {
 		return Collections.EMPTY_LIST;
 	}
 
-	double evaluate(double value);
+	double evaluate(Map<Variable, Double> map) throws VariableNoValueException;
 
 	Expr substitute(Map<Variable, Expr> map);
 
-	default double optimize(double guess){
+	/*default double optimize(double guess){
 		return differentiate().findZero(guess);
 	}
 
@@ -36,13 +38,13 @@ public interface Expr extends Cloneable {
 			guess -= iterTerm.evaluate(guess);
 		}
 		return guess;
-	}
+	}*/
 
 	default Expr simplify(AbstractSimplifier simplifier){
 		return simplifier.simplify(this);
 	}
 
-	default double defIntegral(double a, double b, double dx){
+	/*default double defIntegral(double a, double b, double dx){
 		double integral = this.evaluate(a) + this.evaluate(b);
 		boolean odd = true;
 		for (double x = a;x<b;x+=dx){
@@ -50,5 +52,5 @@ public interface Expr extends Cloneable {
 			odd = !odd;
 		}
 		return integral*dx/3;
-	}
+	}*/
 }

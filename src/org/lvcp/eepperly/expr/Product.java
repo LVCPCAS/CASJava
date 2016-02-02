@@ -1,5 +1,8 @@
 package org.lvcp.eepperly.expr;
 
+import org.lvcp.eepperly.exception.MultivariableException;
+import org.lvcp.eepperly.exception.VariableNoValueException;
+
 import java.util.*;
 
 /**
@@ -20,19 +23,16 @@ public class Product implements Expr {
 		arguments = args;
 	}
 
-	public Expr differentiate(){
+	public Expr differentiate(Variable withRespectTo) throws MultivariableException{
 		List<Expr> sumTerms = new ArrayList<>();
 		List<Expr> prodTerms;
 		for (int i=0;i<arguments.size();i++){
 			prodTerms = new ArrayList<>(arguments);
 			prodTerms.remove(arguments.get(i));
-			prodTerms.add(arguments.get(i).differentiate());
+			prodTerms.add(arguments.get(i).differentiate(withRespectTo));
 			sumTerms.add(new Product(prodTerms));
 		}
 		return new Sum(sumTerms);
-	}
-	public double evaluate(double value){
-		return arguments.get(0).evaluate(value) * arguments.get(1).evaluate(value);
 	}
 	public static Product quotient(Expr numerator, Expr denominator){
 		return new Product(numerator, Power.unaryMultInv(denominator));
@@ -57,5 +57,14 @@ public class Product implements Expr {
 			subTerms.add(itr.next().substitute(subMap));
 		}
 		return new Product(subTerms);
+	}
+	@Override
+	public double evaluate(Map<Variable, Double> evalMap) throws VariableNoValueException {
+		Iterator<Expr> itr = getArguments().iterator();
+		double product = 1;
+		while (itr.hasNext()){
+			product *= itr.next().evaluate(evalMap);
+		}
+		return product;
 	}
 }

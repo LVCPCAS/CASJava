@@ -1,5 +1,8 @@
 package org.lvcp.eepperly.expr;
 
+import org.lvcp.eepperly.exception.MultivariableException;
+import org.lvcp.eepperly.exception.VariableNoValueException;
+
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
@@ -12,12 +15,8 @@ public class Exponential extends UnOp {
 		super(power);
 	}
 
-	public Expr differentiate() {
-		return new Product(argument, this);
-	}
-
-	public double evaluate(double value){
-		return Math.exp(argument.evaluate(value));
+	public Expr differentiate(Variable withRespectTo) throws MultivariableException {
+		return new Product(argument.differentiate(withRespectTo), this);
 	}
 
 	public String toString(){
@@ -28,4 +27,7 @@ public class Exponential extends UnOp {
 	public Expr substitute(Map<Variable, Expr> subMap){
 		return new Exponential(argument.substitute(subMap));
 	}
+
+	@Override
+	public double evaluate(Map<Variable, Double> evalMap) throws VariableNoValueException {return Math.exp(argument.evaluate(evalMap));}
 }

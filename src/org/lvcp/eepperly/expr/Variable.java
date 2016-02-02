@@ -1,5 +1,9 @@
 package org.lvcp.eepperly.expr;
 
+import org.lvcp.eepperly.exception.MultivariableException;
+import org.lvcp.eepperly.exception.VariableNoValueException;
+
+import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 
@@ -16,12 +20,13 @@ public class Variable implements Expr {
 	}
 
 	@Override
-	public Expr differentiate(){
-		return Expr.ONE;
+	public Expr differentiate(Variable withRespectTo) throws MultivariableException {
+		if (this.equals(withRespectTo)){
+			return Expr.ONE;
+		} else{
+			throw new MultivariableException(this+"cannot be differentiated with respect to"+withRespectTo);
+		}
 	}
-
-	@Override
-	public double evaluate(double value){ return value; }
 
 	@Override
 	public String toString(){
@@ -51,5 +56,14 @@ public class Variable implements Expr {
 	@Override
 	public Expr substitute(Map<Variable, Expr> subMap){
 		return subMap.getOrDefault(this, this);
+	}
+	@Override
+	public double evaluate(Map<Variable, Double> evalMap) throws VariableNoValueException {
+		if (evalMap.keySet().contains(this)){
+			return evalMap.get(this);
+		}
+		else{
+			throw new VariableNoValueException(this+" is not in the evaluation map");
+		}
 	}
 }

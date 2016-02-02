@@ -1,5 +1,8 @@
 package org.lvcp.eepperly.expr;
 
+import org.lvcp.eepperly.exception.MultivariableException;
+import org.lvcp.eepperly.exception.VariableNoValueException;
+
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
@@ -11,11 +14,8 @@ public class Sine extends UnOp {
 	public Sine(Expr argument) {
 		super(argument);
 	}
-	public Expr differentiate(){
-		return (new Product(argument.differentiate(), new Cosine(argument)));
-	}
-	public double evaluate(double value){
-		return Math.sin(argument.evaluate(value));
+	public Expr differentiate(Variable withRespectTo) throws MultivariableException{
+		return (new Product(argument.differentiate(withRespectTo), new Cosine(argument)));
 	}
 
 	public String toString(){
@@ -25,4 +25,6 @@ public class Sine extends UnOp {
 	public Expr substitute(Map<Variable, Expr> subMap){
 		return new Sine(argument.substitute(subMap));
 	}
+	@Override
+	public double evaluate(Map<Variable, Double> evalMap) throws VariableNoValueException {return Math.sin(argument.evaluate(evalMap));}
 }

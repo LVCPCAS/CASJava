@@ -1,5 +1,6 @@
 package org.lvcp.eepperly.expr;
 
+import org.lvcp.eepperly.exception.MultivariableException;
 import org.lvcp.eepperly.exception.VariableNoValueException;
 
 import java.util.*;
@@ -24,10 +25,11 @@ public class Sum implements Expr {
 		arguments = summands;
 	}
 
-	public Expr differentiate(){
+	@Override
+	public Expr differentiate(Variable withRespectTo) throws MultivariableException{
 		List<Expr> diffTerms = new ArrayList<>();
 		for (int i=0;i<arguments.size();i++){
-			diffTerms.add(arguments.get(i).differentiate());
+			diffTerms.add(arguments.get(i).differentiate(withRespectTo));
 		}
 		return new Sum(diffTerms);
 	}

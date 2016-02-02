@@ -1,11 +1,9 @@
 package org.lvcp.eepperly.expr;
 
+import org.lvcp.eepperly.exception.MultivariableException;
 import org.lvcp.eepperly.exception.VariableNoValueException;
 
-import java.util.ArrayList;
-import java.util.Iterator;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 /**
  * Created by eepperly16 on 12/11/15.
@@ -17,7 +15,7 @@ public class NumConstant implements Expr {
 		this.value = value;
 	}
 
-	public Expr differentiate(){
+	public Expr differentiate(Variable withRespectTo) throws MultivariableException {
 		return Expr.ZERO;
 	}
 	public String toString(){

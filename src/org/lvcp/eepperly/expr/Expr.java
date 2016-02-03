@@ -70,6 +70,10 @@ public interface Expr extends Cloneable {
 		}
 	}
 
+	default boolean hasVars(){
+		return getVariables().size()!=0;
+	}
+
 	default Expr simplify(AbstractSimplifier simplifier){
 		return simplifier.simplify(this);
 	}

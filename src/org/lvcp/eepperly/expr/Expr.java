@@ -1,5 +1,6 @@
 package org.lvcp.eepperly.expr;
 
+import com.sun.org.apache.xpath.internal.operations.Mult;
 import org.lvcp.eepperly.exception.MultivariableException;
 import org.lvcp.eepperly.exception.VariableNoValueException;
 import org.lvcp.eepperly.simplify.AbstractSimplifier;
@@ -17,6 +18,16 @@ public interface Expr extends Cloneable {
 	Expr TWO = new NumConstant(2.0);
 
 	Expr differentiate(Variable withRespectTo) throws MultivariableException;
+
+	static Map<Variable, Double> makeVarToDoubleMap(Variable var, Double x){
+		Map<Variable, Double> myMap = new HashMap<>();
+		myMap.put(var,x);
+		return myMap;
+	}
+
+	static Variable getOneElementInSet(Set<Variable> set){
+		return set.iterator().next();
+	}
 
 	default List<Expr> getArguments() {
 		return Collections.EMPTY_LIST;
@@ -38,29 +49,43 @@ public interface Expr extends Cloneable {
 
 	Expr substitute(Map<Variable, Expr> map);
 
-	/*default double optimize(double guess){
-		return differentiate().findZero(guess);
+	default double optimize(double guess) throws MultivariableException, VariableNoValueException{
+		if (1== getVariables().size()){
+			return differentiate(getOneElementInSet(getVariables())).findZero(guess);
+		} else{
+			throw new MultivariableException("Cannot optimize can expression with"+getVariables().size()+" arguments");
+		}
 	}
 
-	default double findZero(double guess){
-		Expr iterTerm = Product.quotient(this,this.differentiate());
-		while (Math.abs(evaluate(guess))>1e-8){
-			guess -= iterTerm.evaluate(guess);
+	default double findZero(double guess) throws MultivariableException, VariableNoValueException {
+		if (1 == getVariables().size()) {
+			Variable var = getOneElementInSet(getVariables());
+			Expr iterTerm = Product.quotient(this, this.differentiate(var));
+			while (Math.abs(evaluate(makeVarToDoubleMap(var, guess))) > 1e-8) {
+				guess -= iterTerm.evaluate(makeVarToDoubleMap(var, guess));
+			}
+			return guess;
+		} else{
+			throw new MultivariableException("Cannot solve an expression with "+getVariables().size()+" arguments");
 		}
-		return guess;
-	}*/
+	}
 
 	default Expr simplify(AbstractSimplifier simplifier){
 		return simplifier.simplify(this);
 	}
 
-	/*default double defIntegral(double a, double b, double dx){
-		double integral = this.evaluate(a) + this.evaluate(b);
-		boolean odd = true;
-		for (double x = a;x<b;x+=dx){
-			integral += (odd ? 4 : 2)*this.evaluate(x);
-			odd = !odd;
+	default double defIntegral(double a, double b, double dx) throws MultivariableException, VariableNoValueException{
+		if (1 == getVariables().size()) {
+			Variable varX = getOneElementInSet(getVariables());
+			double integral = this.evaluate(makeVarToDoubleMap(varX, a)) + this.evaluate(makeVarToDoubleMap(varX, b));
+			boolean odd = true;
+			for (double x = a; x < b; x += dx) {
+				integral += (odd ? 4 : 2) * this.evaluate(makeVarToDoubleMap(varX, x));
+				odd = !odd;
+			}
+			return integral * dx / 3;
+		} else{
+			throw new MultivariableException("Cannot integrate an expression with "+getVariables().size()+" arguments");
 		}
-		return integral*dx/3;
-	}*/
+	}
 }

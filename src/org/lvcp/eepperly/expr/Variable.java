@@ -3,9 +3,7 @@ package org.lvcp.eepperly.expr;
 import org.lvcp.eepperly.exception.MultivariableException;
 import org.lvcp.eepperly.exception.VariableNoValueException;
 
-import java.util.Iterator;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 /**
  * Created by eepperly16 on 12/11/15.
@@ -65,5 +63,10 @@ public class Variable implements Expr {
 		else{
 			throw new VariableNoValueException(this+" is not in the evaluation map");
 		}
+	}
+
+	@Override
+	public Set<Variable> getVariables(){
+		return new HashSet<>(Arrays.asList(this));
 	}
 }

@@ -62,4 +62,9 @@ public class NumConstant implements Expr {
 
 	@Override
 	public double evaluate(Map<Variable, Double> evalMap) throws VariableNoValueException {return value;}
+
+	@Override
+	public Set<Variable> getVariables(){
+		return Collections.EMPTY_SET;
+	}
 }

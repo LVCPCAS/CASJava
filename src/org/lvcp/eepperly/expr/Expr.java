@@ -4,9 +4,7 @@ import org.lvcp.eepperly.exception.MultivariableException;
 import org.lvcp.eepperly.exception.VariableNoValueException;
 import org.lvcp.eepperly.simplify.AbstractSimplifier;
 
-import java.util.Collections;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 /**
  * @author Dimitriye Danilovic
@@ -22,6 +20,18 @@ public interface Expr extends Cloneable {
 
 	default List<Expr> getArguments() {
 		return Collections.EMPTY_LIST;
+	}
+	default Set<Variable> getVariables(){
+		if (0==getArguments().size()){
+			return Collections.EMPTY_SET;
+		} else{
+			Iterator<Expr> itr = getArguments().iterator();
+			Set<Variable> variables = new HashSet<>();
+			while (itr.hasNext()){
+				variables.addAll(itr.next().getVariables());
+			}
+			return variables;
+		}
 	}
 
 	double evaluate(Map<Variable, Double> map) throws VariableNoValueException;

@@ -18,7 +18,7 @@ public class Arctangent extends UnOp {
 	public Expr differentiate(Variable withRespectTo) throws MultivariableException{
 		Expr argSquared = new Power(argument, Expr.TWO);
 		Expr sum = new Sum(Expr.ONE, argSquared);
-		Expr toTheMinusOne = new Power(argSquared, Expr.MINUS_ONE);
+		Expr toTheMinusOne = new Power(sum, Expr.MINUS_ONE);
 		return (new Product(argument.differentiate(withRespectTo), toTheMinusOne));
 	}
 

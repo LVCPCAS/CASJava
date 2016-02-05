@@ -15,35 +15,35 @@ public class GeneralLog extends BinOp {
 		super(base, yield);
 	}
 	public Expr differentiate(Variable withRespectTo) throws MultivariableException{
-		if (arguments.get(0).hasVars() && arguments.get(1).hasVars()) {
+		if (arg1.hasVars() && arg2.hasVars()) {
 			return new Sum(
 					new Product(
-							arguments.get(1).differentiate(withRespectTo),
+							arg2.differentiate(withRespectTo),
 							Power.unaryMultInv(new Product(
-									arguments.get(1).differentiate(withRespectTo),
-									new NaturalLog(arguments.get(0))
+									arg2.differentiate(withRespectTo),
+									new NaturalLog(arg1)
 							))
 					),
 					Product.unaryNegation(new Product(
-							arguments.get(0).differentiate(withRespectTo),
-							new NaturalLog(arguments.get(1)),
-							Power.unaryMultInv(arguments.get(0)),
-							new Power(new NaturalLog(arguments.get(0)), new NumConstant(-2))
+							arg1.differentiate(withRespectTo),
+							new NaturalLog(arg2),
+							Power.unaryMultInv(arg1),
+							new Power(new NaturalLog(arg1), new NumConstant(-2))
 					))
 			);
-		} else if (arguments.get(1).hasVars()){
+		} else if (arg2.hasVars()){
 			return new Product(
-					arguments.get(1).differentiate(withRespectTo),
-					Power.unaryMultInv(new NaturalLog(arguments.get(0))),
-					Power.unaryMultInv(arguments.get(1))
+					arg2.differentiate(withRespectTo),
+					Power.unaryMultInv(new NaturalLog(arg1)),
+					Power.unaryMultInv(arg2)
 			);
-		} else if (arguments.get(0).hasVars()){
+		} else if (arg1.hasVars()){
 			return new Product(
 					Expr.MINUS_ONE,
-					new NaturalLog(arguments.get(1)),
-					arguments.get(0).differentiate(withRespectTo),
-					Power.unaryMultInv(arguments.get(0)),
-					new Power(new NaturalLog(arguments.get(0)),new NumConstant(-2))
+					new NaturalLog(arg2),
+					arg1.differentiate(withRespectTo),
+					Power.unaryMultInv(arg1),
+					new Power(new NaturalLog(arg1),new NumConstant(-2))
 			);
 		} else{
 			return Expr.ZERO;
@@ -51,7 +51,7 @@ public class GeneralLog extends BinOp {
 	}
 
 	public String toString(){
-		return String.format("log_{%s}(%s)", arguments.get(0).toString(), arguments.get(1).toString());
+		return String.format("log_{%s}(%s)", arg1.toString(), arg2.toString());
 	}
 
 	@Override
@@ -62,7 +62,7 @@ public class GeneralLog extends BinOp {
 
 	@Override
 	public double evaluate(Map<Variable, Double> evalMap) throws VariableNoValueException {
-		return Math.log(getArguments().get(1).evaluate(evalMap)) /
-				Math.log(getArguments().get(0).evaluate(evalMap));
+		return Math.log(arg2.evaluate(evalMap)) /
+				Math.log(arg1.evaluate(evalMap));
 	}
 }

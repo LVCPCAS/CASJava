@@ -18,22 +18,22 @@ public class Power extends BinOp {
 		return new Product(
 			new Sum(
 				new Product(
-					arguments.get(1).differentiate(withRespectTo),
-					new NaturalLog(arguments.get(0))
+					arg2.differentiate(withRespectTo),
+					new NaturalLog(arg1)
 				),
 				new Product(
 					new Product(
-						arguments.get(1),
-						Power.unaryMultInv(arguments.get(0))
+						arg2,
+						Power.unaryMultInv(arg1)
 					),
-					arguments.get(0).differentiate(withRespectTo)
+					arg1.differentiate(withRespectTo)
 				)
 			),
 			this
 		);
 	}
 	public String toString(){
-		return (arguments.get(0).toString()+"^"+arguments.get(1).toString());
+		return (arg1.toString()+"^"+arg2.toString());
 	}
 	public static Power unaryMultInv(Expr expression){
 		return new Power(expression, Expr.MINUS_ONE);

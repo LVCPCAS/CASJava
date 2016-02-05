@@ -1,24 +1,20 @@
 package org.lvcp.eepperly.expr;
 
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 /**
  * Created by eepperly16 on 12/16/15.
  */
 public abstract class BinOp implements Expr {
-	protected List<Expr> arguments;
+	protected Expr arg1, arg2;
 
 	@Override
 	public List<Expr> getArguments() {
-		return Collections.unmodifiableList(arguments);
+		return Arrays.asList(arg1, arg2);
 	}
 
 	public BinOp(Expr arg1, Expr arg2){
-		arguments = new ArrayList<>();
-		arguments.add(arg1);
-		arguments.add(arg2);
+		this.arg1 = arg1;
+		this.arg2 = arg2;
 	}
 }

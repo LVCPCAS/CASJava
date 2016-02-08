@@ -80,6 +80,8 @@ public class DefaultSimplifier extends AbstractSimplifier {
 				simplifiedArgs.add(numConstantsCombined);
 			}
 			return new Product(simplifiedArgs);
+		} else if (expression instanceof NumConstant || expression instanceof Variable) {
+			return expression;
 		} else{
 			throw new ExprTypeException("Expression not recognized!");
 		}

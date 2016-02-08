@@ -13,6 +13,14 @@ public abstract class BinOp implements Expr {
 		return Arrays.asList(arg1, arg2);
 	}
 
+	public Expr getArg1(){
+		return arg1;
+	}
+
+	public Expr getArg2(){
+		return arg2;
+	}
+
 	public BinOp(Expr arg1, Expr arg2){
 		this.arg1 = arg1;
 		this.arg2 = arg2;

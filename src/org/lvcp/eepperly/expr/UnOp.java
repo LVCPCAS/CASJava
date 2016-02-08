@@ -16,6 +16,10 @@ public abstract class UnOp implements Expr {
 		return Arrays.asList(argument);
 	}
 
+	public Expr getArg(){
+		return argument;
+	}
+
 	public UnOp(Expr arg1){
 		argument = arg1;
 	}

@@ -1,5 +1,6 @@
 package org.lvcp.eepperly.simplify;
 
+import org.lvcp.eepperly.exception.ExprTypeException;
 import org.lvcp.eepperly.expr.Expr;
 
 /**
@@ -7,5 +8,5 @@ import org.lvcp.eepperly.expr.Expr;
  */
 public abstract class AbstractSimplifier {
 	public static final AbstractSimplifier TRIVIAL_SIMPLIFIER = new TrivialSimplifier();
-	public abstract Expr simplify(Expr expression);
+	public abstract Expr simplify(Expr expression) throws ExprTypeException;
 }

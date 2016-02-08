@@ -1,5 +1,6 @@
 package org.lvcp.eepperly.simplify;
 
+import org.lvcp.eepperly.exception.ExprTypeException;
 import org.lvcp.eepperly.expr.*;
 
 import java.util.ArrayList;
@@ -10,52 +11,101 @@ import java.util.List;
  * Created by eepperly16 on 12/14/15.
  */
 public class DefaultSimplifier extends AbstractSimplifier {
-	public Expr simplify(Expr expression){ //function takes an expression argument and outputs a simplified version of the expression
-		List<Expr> args = expression.getArguments();
-		for (int i=0;i<args.size();i++){ //simplify all of the individual arguments
-			args.set(i, simplify(args.get(i)));
-		}
-		if (expression instanceof Product){ //combines numerical terms, flattens products
-			List<NumConstant> numTerms = new ArrayList<>(); //list of numerical terms
-			Expr temp;
-			for (int i=0;i<args.size();i++){
-				temp = args.get(i);
-				if (temp instanceof NumConstant){
-					numTerms.add((NumConstant) temp); //add numerical term to list of numerical terms
-					args.remove(i);
-				}
-				else if (temp instanceof Product){
-					args.addAll(temp.getArguments()); //flattens product
-					args.remove(i);
+	@Override
+	public Expr simplify(Expr expression) throws ExprTypeException { //function takes an expression argument and outputs a simplified version of the expression
+		if (expression instanceof UnOp){ //simplifies the argument, then returns a new expression
+			Expr simplified = ((UnOp) expression).getArg().simplify(this);
+			if (expression instanceof Sine){
+				return new Sine(simplified);
+			} else if (expression instanceof  Cosine){
+				return new Cosine(simplified);
+			} else if (expression instanceof Arccosine){
+				return new Arccosine(simplified);
+			} else if (expression instanceof Arcsine){
+				return new Arcsine(simplified);
+			} else if (expression instanceof Arctangent){
+				return new Arctangent(simplified);
+			} else if (expression instanceof NaturalLog){
+				return new NaturalLog(simplified);
+			} else if (expression instanceof Exponential){
+				return new Exponential(simplified);
+			} else{
+				throw new ExprTypeException("UnOp expression not recognized!");
+			}
+		} else if (expression instanceof BinOp){ //simplifies arguments 1 and 2, then returns a new expression
+			Expr simplified1 = ((BinOp) expression).getArg1().simplify(this);
+			Expr simplified2 = ((BinOp) expression).getArg2().simplify(this);
+			if (expression instanceof GeneralLog){
+				return new GeneralLog(simplified1, simplified2);
+			} else if (expression instanceof  Power){
+				return new Power(simplified1, simplified2);
+			} else{
+				throw new ExprTypeException("BinOp expression not recognized!");
+			}
+		} else if (expression instanceof Sum) {
+			List<Expr> simplifiedArgs = new ArrayList<>();
+			List<NumConstant> numConstants = new ArrayList<>(); //list of all numeric constants that are arguments
+			Iterator<Expr> itr = expression.getArguments().iterator();
+			Expr addTerm;
+			while (itr.hasNext()){
+				addTerm = itr.next().simplify(this); //simplify each argument
+				if (addTerm instanceof NumConstant){ //if argument is numeric constant, add to list of numeric constants
+					numConstants.add((NumConstant) addTerm);
+				} else { //if not numeric constant, add simplied argument to list
+					simplifiedArgs.add(addTerm);
 				}
 			}
-			NumConstant constantTerm = NumConstant.product(numTerms); //multiplies all numerical terms
-			if (Expr.ZERO.equals(constantTerm)) return Expr.ZERO;
-			else if (!Expr.ONE.equals(constantTerm)) args.add(constantTerm);
-			if (args.size()==1) return args.get(0);
-			return args.stream().reduce(Expr.ONE, Product::new); //returns simplified product
-		}
-		else if (expression instanceof Sum){ //combines numerical terms, flattens sums
-			List<NumConstant> numTerms = new ArrayList<>();
-			Expr temp;
-			for (int i=0;i<args.size();i++){
-				temp = args.get(i);
-				if (temp instanceof NumConstant) {
-					numTerms.add((NumConstant) temp);
-					args.remove(i);
-				}
-				else if (temp instanceof Sum){
-					args.addAll(temp.getArguments());
-					args.remove(i);
+			NumConstant numConstantsCombined = addNumConstant(numConstants); //add togethor all numeric constants
+			if (!numConstantsCombined.equals(Expr.ZERO)) { //if numeric constants add to nonzero number, add to list of args
+				simplifiedArgs.add(numConstantsCombined);
+			}
+			return new Sum(simplifiedArgs);
+		} else if (expression instanceof Product) {
+			List<Expr> simplifiedArgs = new ArrayList<>();
+			List<NumConstant> numConstants = new ArrayList<>(); //list of all numeric constants that are arguments
+			Iterator<Expr> itr = expression.getArguments().iterator();
+			Expr prodTerm;
+			while (itr.hasNext()){
+				prodTerm = itr.next().simplify(this);
+				if (prodTerm instanceof NumConstant){
+					numConstants.add((NumConstant) prodTerm);
+				} else{
+					simplifiedArgs.add(prodTerm);
 				}
 			}
-			NumConstant constantTerm = NumConstant.sum(numTerms);
-			if (!Expr.ZERO.equals(constantTerm)) args.add(constantTerm);
-			if (args.size()==1) return args.get(0);
-			return args.stream().reduce(Expr.ZERO, Sum::new);
+			NumConstant numConstantsCombined = multiplyNumConstant(numConstants); //multiply togethor all numeric constants
+			if (numConstantsCombined.equals(Expr.ZERO)) { //if product by 0, return 0
+				return Expr.ZERO;
+			} else if (!numConstantsCombined.equals(Expr.ONE)) { //if numeric constants multoply to nonone number, add to list of args
+				simplifiedArgs.add(numConstantsCombined);
+			}
+			return new Product(simplifiedArgs);
+		} else{
+			throw new ExprTypeException("Expression not recognized!");
 		}
-		else{ //if not sum or product return self
-			return expression;
+	}
+	private NumConstant addNumConstant(List<NumConstant> numConstants){
+		if (numConstants.size()>0) {
+			double value = 0;
+			Iterator<NumConstant> itr = numConstants.iterator();
+			while (itr.hasNext()) {
+				value += itr.next().getValue();
+			}
+			return new NumConstant(value);
+		} else{
+			return Expr.ZERO;
+		}
+	}
+	private NumConstant multiplyNumConstant(List<NumConstant> numConstants){
+		if (numConstants.size()>0) {
+			double value = 1;
+			Iterator<NumConstant> itr = numConstants.iterator();
+			while (itr.hasNext()) {
+				value *= itr.next().getValue();
+			}
+			return new NumConstant(value);
+		} else{
+			return Expr.ONE;
 		}
 	}
 }

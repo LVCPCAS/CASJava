@@ -12,10 +12,10 @@ import java.util.*;
  * @since 1/22/16
  */
 public interface Expr extends Cloneable {
-	Expr ZERO = new NumConstant(0.0);
-	Expr ONE = new NumConstant(1.0);
-	Expr MINUS_ONE = new NumConstant(-1.0);
-	Expr TWO = new NumConstant(2.0);
+	NumConstant ZERO = new NumConstant(0.0);
+	NumConstant ONE = new NumConstant(1.0);
+	NumConstant MINUS_ONE = new NumConstant(-1.0);
+	NumConstant TWO = new NumConstant(2.0);
 
 	Expr differentiate(Variable withRespectTo) throws MultivariableException;
 

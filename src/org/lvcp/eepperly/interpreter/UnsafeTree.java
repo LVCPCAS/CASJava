@@ -12,6 +12,7 @@ import java.util.Optional;
 public abstract class UnsafeTree {
 	public abstract List<UnsafeTree> getChildren();
 	public abstract Optional<String> getTokenIfLeaf();
+	public abstract boolean isLeaf();
 
 	private static class Internal extends UnsafeTree {
 		private List<UnsafeTree> children;
@@ -26,6 +27,10 @@ public abstract class UnsafeTree {
 
 		public Optional<String> getTokenIfLeaf() {
 			return Optional.empty();
+		}
+
+		public boolean isLeaf() {
+			return false;
 		}
 	}
 
@@ -42,6 +47,10 @@ public abstract class UnsafeTree {
 
 		public Optional<String> getTokenIfLeaf() {
 			return Optional.of(token);
+		}
+
+		public boolean isLeaf() {
+			return true;
 		}
 	}
 
@@ -61,6 +70,12 @@ public abstract class UnsafeTree {
 		private UnsafeTreeBuilder(UnsafeTreeBuilder parent) {
 			this();
 			this.parent = parent;
+		}
+
+		public UnsafeTreeBuilder addLeaf(String token) {
+			verifyEnabled();
+			tree.children.add(UnsafeTree.of(token));
+			return this;
 		}
 
 		public UnsafeTreeBuilder addInternal() {

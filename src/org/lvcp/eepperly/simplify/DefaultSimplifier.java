@@ -59,6 +59,11 @@ public class DefaultSimplifier extends AbstractSimplifier {
 			if (!numConstantsCombined.equals(Expr.ZERO)) { //if numeric constants add to nonzero number, add to list of args
 				simplifiedArgs.add(numConstantsCombined);
 			}
+			if (simplifiedArgs.size()==1){
+				return simplifiedArgs.get(0);
+			} else if (simplifiedArgs.size() == 0){
+				return Expr.ZERO;
+			}
 			return new Sum(simplifiedArgs);
 		} else if (expression instanceof Product) {
 			List<Expr> simplifiedArgs = new ArrayList<>();
@@ -78,6 +83,11 @@ public class DefaultSimplifier extends AbstractSimplifier {
 				return Expr.ZERO;
 			} else if (!numConstantsCombined.equals(Expr.ONE)) { //if numeric constants multoply to nonone number, add to list of args
 				simplifiedArgs.add(numConstantsCombined);
+			}
+			if (simplifiedArgs.size()==1){
+				return simplifiedArgs.get(0);
+			} else if (simplifiedArgs.size() == 0){
+				return Expr.ONE;
 			}
 			return new Product(simplifiedArgs);
 		} else if (expression instanceof NumConstant || expression instanceof Variable) {

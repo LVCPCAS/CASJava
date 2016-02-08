@@ -1,6 +1,7 @@
 package org.lvcp.eepperly.expr;
 
 import com.sun.org.apache.xpath.internal.operations.Mult;
+import org.lvcp.eepperly.exception.ExprTypeException;
 import org.lvcp.eepperly.exception.MultivariableException;
 import org.lvcp.eepperly.exception.VariableNoValueException;
 import org.lvcp.eepperly.simplify.AbstractSimplifier;
@@ -74,7 +75,7 @@ public interface Expr extends Cloneable {
 		return getVariables().size()!=0;
 	}
 
-	default Expr simplify(AbstractSimplifier simplifier){
+	default Expr simplify(AbstractSimplifier simplifier) throws ExprTypeException {
 		return simplifier.simplify(this);
 	}
 

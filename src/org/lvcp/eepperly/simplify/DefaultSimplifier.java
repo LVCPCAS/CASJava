@@ -13,6 +13,11 @@ import java.util.List;
 public class DefaultSimplifier extends AbstractSimplifier {
 	@Override
 	public Expr simplify(Expr expression) throws ExprTypeException { //function takes an expression argument and outputs a simplified version of the expression
+		//To-do
+		//Flatten sums/products
+		//Distribute multiplication over addition
+		//Simplify numeric expressions to num constants
+
 		if (expression instanceof UnOp){ //simplifies the argument, then returns a new expression
 			Expr simplified = ((UnOp) expression).getArg().simplify(this);
 			if (expression instanceof Sine){
@@ -43,14 +48,30 @@ public class DefaultSimplifier extends AbstractSimplifier {
 				throw new ExprTypeException("BinOp expression not recognized!");
 			}
 		} else if (expression instanceof Sum) {
+			//Variables for simplifying
 			List<Expr> simplifiedArgs = new ArrayList<>();
 			List<NumConstant> numConstants = new ArrayList<>(); //list of all numeric constants that are arguments
 			Iterator<Expr> itr = expression.getArguments().iterator();
 			Expr addTerm;
+
+			//Variables for flattening
+			Iterator<Expr> subItr;
+			Expr subAddTerm;
+
 			while (itr.hasNext()){
 				addTerm = itr.next().simplify(this); //simplify each argument
 				if (addTerm instanceof NumConstant){ //if argument is numeric constant, add to list of numeric constants
 					numConstants.add((NumConstant) addTerm);
+				} else if (addTerm instanceof Sum){
+					subItr = addTerm.getArguments().iterator();
+					while (subItr.hasNext()){
+						subAddTerm = subItr.next();
+						if (subAddTerm instanceof NumConstant){
+							numConstants.add((NumConstant) subAddTerm);
+						} else{
+							simplifiedArgs.add(subAddTerm);
+						}
+					}
 				} else { //if not numeric constant, add simplied argument to list
 					simplifiedArgs.add(addTerm);
 				}
@@ -66,14 +87,30 @@ public class DefaultSimplifier extends AbstractSimplifier {
 			}
 			return new Sum(simplifiedArgs);
 		} else if (expression instanceof Product) {
+			//Variables for simplifying
 			List<Expr> simplifiedArgs = new ArrayList<>();
 			List<NumConstant> numConstants = new ArrayList<>(); //list of all numeric constants that are arguments
 			Iterator<Expr> itr = expression.getArguments().iterator();
 			Expr prodTerm;
+
+			//Variables for flattening
+			Iterator<Expr> subItr;
+			Expr subProdTerm;
+
 			while (itr.hasNext()){
 				prodTerm = itr.next().simplify(this);
 				if (prodTerm instanceof NumConstant){
 					numConstants.add((NumConstant) prodTerm);
+				} else if (prodTerm instanceof Product){
+					subItr = prodTerm.getArguments().iterator();
+					while (subItr.hasNext()){
+						subProdTerm = subItr.next();
+						if (subProdTerm instanceof NumConstant){
+							numConstants.add((NumConstant) subProdTerm);
+						} else{
+							simplifiedArgs.add(subProdTerm);
+						}
+					}
 				} else{
 					simplifiedArgs.add(prodTerm);
 				}

@@ -18,7 +18,6 @@ public class DefaultSimplifier extends AbstractSimplifier {
 	@Override
 	public Expr simplify(Expr expression) throws ExprTypeException { //function takes an expression argument and outputs a simplified version of the expression
 		//To-do
-		//Flatten sums/products
 		//Distribute multiplication over addition
 		//Simplify numeric expressions to num constants
 
@@ -130,7 +129,28 @@ public class DefaultSimplifier extends AbstractSimplifier {
 			} else if (simplifiedArgs.size() == 0){
 				return Expr.ONE;
 			}
-			return new Product(simplifiedArgs);
+
+			//Distribution
+			List<Sum> sumTerms = new ArrayList<>();
+			boolean isSum = false;
+			Expr distTerm;
+
+			Iterator<Expr> distItr = simplifiedArgs.iterator();
+			while (distItr.hasNext()){
+				distTerm = distItr.next();
+				if (distTerm instanceof Sum){
+					sumTerms.add((Sum) distTerm);
+					isSum = true;
+				} else{
+					sumTerms.add(new Sum(distTerm));
+				}
+			}
+			if (isSum){
+				return new Product(simplifiedArgs);
+			} else{
+				return multiplyPolynomials(sumTerms).simplify(this);
+			}
+
 		} else if (expression instanceof NumConstant || expression instanceof Variable) {
 			return expression;
 		} else{

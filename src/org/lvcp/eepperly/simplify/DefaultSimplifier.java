@@ -4,8 +4,12 @@ import org.lvcp.eepperly.exception.ExprTypeException;
 import org.lvcp.eepperly.expr.*;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Iterator;
 import java.util.List;
+import java.util.stream.Collectors;
+import java.util.stream.Stream;
+import java.util.stream.StreamSupport;
 
 /**
  * Created by eepperly16 on 12/14/15.
@@ -133,6 +137,21 @@ public class DefaultSimplifier extends AbstractSimplifier {
 			throw new ExprTypeException("Expression not recognized!");
 		}
 	}
+
+	/**
+	 * Returns the product of polynomials
+	 * @param polys an iterable of polynomials
+	 * @return a Sum consisting of the multiplied out values
+	 */
+	private Sum multiplyPolynomials(Iterable<Sum> polys) {
+		return new Sum(StreamSupport.stream(polys.spliterator(), true)
+				.map(Sum::getArguments)
+				.map(List::parallelStream)
+				.reduce((A, B) -> A.flatMap(a -> B.map(b -> new Product(a, b))))
+				.map(stream -> stream.collect(Collectors.toList()))
+				.orElse(Arrays.asList(Expr.ONE)));
+	}
+
 	private NumConstant addNumConstant(List<NumConstant> numConstants){
 		if (numConstants.size()>0) {
 			double value = 0;

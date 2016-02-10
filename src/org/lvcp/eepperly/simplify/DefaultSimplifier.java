@@ -3,10 +3,7 @@ package org.lvcp.eepperly.simplify;
 import org.lvcp.eepperly.exception.ExprTypeException;
 import org.lvcp.eepperly.expr.*;
 
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Iterator;
-import java.util.List;
+import java.util.*;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 import java.util.stream.StreamSupport;
@@ -130,6 +127,8 @@ public class DefaultSimplifier extends AbstractSimplifier {
 				return Expr.ONE;
 			}
 
+			
+
 			//Distribution
 			List<Sum> sumTerms = new ArrayList<>();
 			boolean isSum = false;
@@ -145,12 +144,15 @@ public class DefaultSimplifier extends AbstractSimplifier {
 					sumTerms.add(new Sum(distTerm));
 				}
 			}
-			if (isSum){
+
+			if (!isSum){
 				return new Product(simplifiedArgs);
 			} else{
+				for (Sum sum: sumTerms) {
+					System.out.println(sum);
+				}
 				return multiplyPolynomials(sumTerms).simplify(this);
 			}
-
 		} else if (expression instanceof NumConstant || expression instanceof Variable) {
 			return expression;
 		} else{
@@ -163,13 +165,16 @@ public class DefaultSimplifier extends AbstractSimplifier {
 	 * @param polys an iterable of polynomials
 	 * @return a Sum consisting of the multiplied out values
 	 */
-	private Sum multiplyPolynomials(Iterable<Sum> polys) {
-		return new Sum(StreamSupport.stream(polys.spliterator(), true)
-				.map(Sum::getArguments)
-				.map(List::parallelStream)
-				.reduce((A, B) -> A.flatMap(a -> B.map(b -> new Product(a, b))))
-				.map(stream -> stream.collect(Collectors.toList()))
-				.orElse(Arrays.asList(Expr.ONE)));
+	private Sum multiplyPolynomials(Collection<Sum> polys) {
+		return new Sum(polys.parallelStream().map(Sum::getArguments).reduce((A, B) -> {
+			List<Expr> ret = new ArrayList<>();
+			for (Expr a : A) {
+				for (Expr b : B) {
+					ret.add(new Product(a, b));
+				}
+			}
+			return ret;
+		}).orElse(Arrays.asList(Expr.ZERO)));
 	}
 
 	private NumConstant addNumConstant(List<NumConstant> numConstants){

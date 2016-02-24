@@ -127,7 +127,7 @@ public class DefaultSimplifier extends AbstractSimplifier {
 				return Expr.ONE;
 			}
 
-			
+			simplifiedArgs = combinePowers(simplifiedArgs);
 
 			//Distribution
 			List<Sum> sumTerms = new ArrayList<>();
@@ -148,9 +148,9 @@ public class DefaultSimplifier extends AbstractSimplifier {
 			if (!isSum){
 				return new Product(simplifiedArgs);
 			} else{
-				for (Sum sum: sumTerms) {
-					System.out.println(sum);
-				}
+				//for (Sum sum: sumTerms) {
+					//System.out.println(sum);
+				//}
 				return multiplyPolynomials(sumTerms).simplify(this);
 			}
 		} else if (expression instanceof NumConstant || expression instanceof Variable) {
@@ -159,7 +159,42 @@ public class DefaultSimplifier extends AbstractSimplifier {
 			throw new ExprTypeException("Expression not recognized!");
 		}
 	}
+	private List<Expr> combinePowers(List<Expr> exprs) throws ExprTypeException{
+		Expr base;
+		for (Expr expr: exprs){
+			if (expr instanceof Power){
+				base = ((Power) expr).getArg1();
+			} else {
+				base = expr;
+			}
+			List<Expr> exponents = new ArrayList<>();
+			for (Expr expr2: exprs){
+				System.out.println("Expr:   "+expr2);
+				printList(exprs);
+				if (expr2 instanceof Power){
+					Power exprPower = (Power) expr2;
+					if (hasBase(exprPower, base)){
+						exponents.add(exprPower.getArg2());
+						exprs.remove(expr2);
+					}
+				} else {
+					if (base.equals(expr2)){
+						exponents.add(Expr.ONE);
+						exprs.remove(expr2);
+					}
+				}
+			}
+			if (1!=exponents.size()) {
+				exprs.add(new Power(base, (new Sum(exponents)).simplify(this)));
+				return combinePowers(exprs);
+			}
+		}
+		return exprs;
+	}
 
+	private boolean hasBase(Power power, Expr base){
+		return base.equals(power.getArg1());
+	}
 	/**
 	 * Returns the product of polynomials
 	 * @param polys an iterable of polynomials
@@ -199,6 +234,11 @@ public class DefaultSimplifier extends AbstractSimplifier {
 			return new NumConstant(value);
 		} else{
 			return Expr.ONE;
+		}
+	}
+	private void printList(List list){
+		for (Object o: list){
+			System.out.println(o);
 		}
 	}
 }

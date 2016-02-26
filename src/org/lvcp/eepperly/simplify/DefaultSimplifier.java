@@ -127,7 +127,7 @@ public class DefaultSimplifier extends AbstractSimplifier {
 				return Expr.ONE;
 			}
 
-			simplifiedArgs = combinePowers(simplifiedArgs);
+			//simplifiedArgs = combinePowers(simplifiedArgs);
 
 			//Distribution
 			List<Sum> sumTerms = new ArrayList<>();

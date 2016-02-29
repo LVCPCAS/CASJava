@@ -22,8 +22,8 @@ public class Main {
 		Scanner scan = new Scanner(System.in);
 		while (true) {
 			String line = scan.nextLine();
-			String strippedLine = line.replaceAll("\\s+","").toLowerCase();
-			switch (strippedLine){
+			String[] splitLine = line.toLowerCase().split("\\s+");
+			switch (splitLine[0]){
 				case "simplify":
 					try {
 						expr = expr.simplify(simp);
@@ -34,14 +34,28 @@ public class Main {
 					break;
 				case "zero":
 					try {
-						System.out.println(expr.findZero(3 * rand.nextDouble() + 0.05));
+						if(splitLine.length==1){
+							System.out.println(expr.findZero(3 * rand.nextDouble() + 0.05));
+						}else{
+							double n = Double.parseDouble(splitLine[1]);
+							System.out.println(expr.findZero(n));
+						}
+
 					} catch (Exception ex){
 						ex.printStackTrace();
 					}
 					break;
 				case "differentiate":
 					try{
-						expr = expr.differentiate(Expr.getOneElementInSet(expr.getVariables())).simplify(simp);
+						if(splitLine.length==1){
+							expr = expr.differentiate(Expr.getOneElementInSet(expr.getVariables())).simplify(simp);
+						}else{
+							int n = Integer.parseInt(splitLine[1], 10);
+							while(n>0){
+								expr = expr.differentiate(Expr.getOneElementInSet(expr.getVariables())).simplify(simp);
+								n--;
+							}
+						}
 						System.out.println(expr);
 					} catch (Exception ex){
 						ex.printStackTrace();

@@ -127,7 +127,7 @@ public class DefaultSimplifier extends AbstractSimplifier {
 				return Expr.ONE;
 			}
 
-			//simplifiedArgs = combinePowers(simplifiedArgs);
+			simplifiedArgs = combinePowers(simplifiedArgs);
 
 			//Distribution
 			List<Sum> sumTerms = new ArrayList<>();
@@ -160,36 +160,36 @@ public class DefaultSimplifier extends AbstractSimplifier {
 		}
 	}
 	private List<Expr> combinePowers(List<Expr> exprs) throws ExprTypeException{
+		Map<Expr, Double> exprMap = new HashMap<>();
 		Expr base;
+		Power power;
+		double exponent;
 		for (Expr expr: exprs){
 			if (expr instanceof Power){
-				base = ((Power) expr).getArg1();
-			} else {
-				base = expr;
-			}
-			List<Expr> exponents = new ArrayList<>();
-			for (Expr expr2: exprs){
-				System.out.println("Expr:   "+expr2);
-				printList(exprs);
-				if (expr2 instanceof Power){
-					Power exprPower = (Power) expr2;
-					if (hasBase(exprPower, base)){
-						exponents.add(exprPower.getArg2());
-						exprs.remove(expr2);
-					}
-				} else {
-					if (base.equals(expr2)){
-						exponents.add(Expr.ONE);
-						exprs.remove(expr2);
-					}
+				power = (Power) expr;
+				if (power.getArg2() instanceof NumConstant){
+					base = power.getArg1();
+					exponent = ((NumConstant) power.getArg2()).getValue();
+				} else{
+					base = power;
+					exponent = 1;
 				}
+			} else{
+				base = expr;
+				exponent = 1;
 			}
-			if (1!=exponents.size()) {
-				exprs.add(new Power(base, (new Sum(exponents)).simplify(this)));
-				return combinePowers(exprs);
+
+			exprMap.put(base, exprMap.getOrDefault(base, 0.0)+exponent);
+		}
+		List<Expr> exprList = new ArrayList<>();
+		for (Expr key: exprMap.keySet()){
+			if (1.0 == exprMap.get(key)){
+				exprList.add(key);
+			} else if (0.0 != exprMap.get(key)){
+				exprList.add(new Power(key, new NumConstant(exprMap.get(key))));
 			}
 		}
-		return exprs;
+		return exprList;
 	}
 
 	private boolean hasBase(Power power, Expr base){

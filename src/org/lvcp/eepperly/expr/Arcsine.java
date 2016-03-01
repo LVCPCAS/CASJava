@@ -36,4 +36,19 @@ public class Arcsine extends UnOp {
 		return Math.asin(argument.evaluate(evalMap));
 	}
 
+	@Override
+	public boolean equals(Object o) {
+		if (this == o) return true;
+		if (!(o instanceof Arcsine)) return false;
+
+		Arcsine unOp = (Arcsine) o;
+
+		return !(argument != null ? !argument.equals(unOp.argument) : unOp.argument != null);
+
+	}
+
+	@Override
+	public int hashCode() {
+		return argument != null ? argument.hashCode() : 0;
+	}
 }

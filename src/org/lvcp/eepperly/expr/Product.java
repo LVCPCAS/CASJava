@@ -67,4 +67,20 @@ public class Product implements Expr {
 		}
 		return product;
 	}
+
+	@Override
+	public boolean equals(Object o) {
+		if (this == o) return true;
+		if (o == null || getClass() != o.getClass()) return false;
+
+		Product product = (Product) o;
+
+		return !(arguments != null ? !arguments.equals(product.arguments) : product.arguments != null);
+
+	}
+
+	@Override
+	public int hashCode() {
+		return arguments != null ? arguments.hashCode() : 0;
+	}
 }

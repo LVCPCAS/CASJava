@@ -27,4 +27,20 @@ public class Sine extends UnOp {
 	}
 	@Override
 	public double evaluate(Map<Variable, Double> evalMap) throws VariableNoValueException {return Math.sin(argument.evaluate(evalMap));}
+
+	@Override
+	public boolean equals(Object o) {
+		if (this == o) return true;
+		if (!(o instanceof Sine)) return false;
+
+		Sine unOp = (Sine) o;
+
+		return !(argument != null ? !argument.equals(unOp.argument) : unOp.argument != null);
+
+	}
+
+	@Override
+	public int hashCode() {
+		return argument != null ? argument.hashCode() : 0;
+	}
 }

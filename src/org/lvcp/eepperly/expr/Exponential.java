@@ -30,4 +30,20 @@ public class Exponential extends UnOp {
 
 	@Override
 	public double evaluate(Map<Variable, Double> evalMap) throws VariableNoValueException {return Math.exp(argument.evaluate(evalMap));}
+
+	@Override
+	public boolean equals(Object o) {
+		if (this == o) return true;
+		if (!(o instanceof Exponential)) return false;
+
+		Exponential unOp = (Exponential) o;
+
+		return !(argument != null ? !argument.equals(unOp.argument) : unOp.argument != null);
+
+	}
+
+	@Override
+	public int hashCode() {
+		return argument != null ? argument.hashCode() : 0;
+	}
 }

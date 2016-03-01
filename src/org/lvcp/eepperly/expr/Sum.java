@@ -61,4 +61,20 @@ public class Sum implements Expr {
 		}
 		return sum;
 	}
+
+	@Override
+	public boolean equals(Object o) {
+		if (this == o) return true;
+		if (o == null || getClass() != o.getClass()) return false;
+
+		Sum sum = (Sum) o;
+
+		return !(arguments != null ? !arguments.equals(sum.arguments) : sum.arguments != null);
+
+	}
+
+	@Override
+	public int hashCode() {
+		return arguments != null ? arguments.hashCode() : 0;
+	}
 }

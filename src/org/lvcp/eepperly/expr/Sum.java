@@ -69,7 +69,21 @@ public class Sum implements Expr {
 
 		Sum sum = (Sum) o;
 
-		return !(arguments != null ? !arguments.equals(sum.arguments) : sum.arguments != null);
+		boolean setsAreEqual = true;
+
+		for (Expr arg: arguments){
+			if (!sum.getArguments().contains(arg)){
+				setsAreEqual = false;
+			}
+		}
+
+		for (Expr arg: sum.getArguments()){
+			if (!arguments.contains(arg)){
+				setsAreEqual = false;
+			}
+		}
+
+		return !(arguments != null ? !setsAreEqual : sum.arguments != null);
 
 	}
 

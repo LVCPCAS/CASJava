@@ -75,7 +75,21 @@ public class Product implements Expr {
 
 		Product product = (Product) o;
 
-		return !(arguments != null ? !arguments.equals(product.arguments) : product.arguments != null);
+		boolean setsAreEqual = true;
+
+		for (Expr arg: arguments){
+			if (!product.getArguments().contains(arg)){
+				setsAreEqual = false;
+			}
+		}
+
+		for (Expr arg: product.getArguments()){
+			if (!arguments.contains(arg)){
+				setsAreEqual = false;
+			}
+		}
+
+		return !(arguments != null ? !setsAreEqual : product.arguments != null);
 
 	}
 

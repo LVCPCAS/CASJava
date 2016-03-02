@@ -80,6 +80,8 @@ public class DefaultSimplifier extends AbstractSimplifier {
 			if (!numConstantsCombined.equals(Expr.ZERO)) { //if numeric constants add to nonzero number, add to list of args
 				simplifiedArgs.add(numConstantsCombined);
 			}
+
+			simplifiedArgs = combineTerms(simplifiedArgs);
 			if (simplifiedArgs.size()==1){
 				return simplifiedArgs.get(0);
 			} else if (simplifiedArgs.size() == 0){
@@ -121,13 +123,14 @@ public class DefaultSimplifier extends AbstractSimplifier {
 			} else if (!numConstantsCombined.equals(Expr.ONE)) { //if numeric constants multoply to nonone number, add to list of args
 				simplifiedArgs.add(numConstantsCombined);
 			}
+
+			simplifiedArgs = combinePowers(simplifiedArgs);
+
 			if (simplifiedArgs.size()==1){
 				return simplifiedArgs.get(0);
 			} else if (simplifiedArgs.size() == 0){
 				return Expr.ONE;
 			}
-
-			simplifiedArgs = combinePowers(simplifiedArgs);
 
 			//Distribution
 			List<Sum> sumTerms = new ArrayList<>();
@@ -187,6 +190,50 @@ public class DefaultSimplifier extends AbstractSimplifier {
 				exprList.add(key);
 			} else if (0.0 != exprMap.get(key)){
 				exprList.add(new Power(key, new NumConstant(exprMap.get(key))));
+			}
+		}
+		return exprList;
+	}
+
+	private List<Expr> combineTerms(List<Expr> exprs) throws ExprTypeException{
+		Map<Expr, Double> exprMap = new HashMap<>();
+		Expr term;
+		Product product;
+		double coefficient;
+		for (Expr expr: exprs){
+			if (expr instanceof Product){
+				product = (Product) expr;
+				term = product;
+				coefficient = 1;
+				for (Expr prodTerm: product.getArguments()){
+					if (prodTerm instanceof NumConstant){
+						List<Expr> terms = new ArrayList<>();
+						terms.addAll(product.getArguments());
+						terms.remove(prodTerm);
+						term = new Product(terms);
+						coefficient = ((NumConstant) prodTerm).getValue();
+						break;
+					}
+				}
+			} else{
+				term = expr;
+				coefficient = 1.0;
+			}
+			exprMap.put(term, exprMap.getOrDefault(term, 0.0)+coefficient);
+		}
+		List<Expr> exprList = new ArrayList<>();
+		for (Expr key: exprMap.keySet()){
+			if (1.0 == exprMap.get(key)){
+				exprList.add(key);
+			} else if (0.0 != exprMap.get(key)){
+				List<Expr> elementsToMultiply = new ArrayList<>();
+				if (key instanceof Product){
+					elementsToMultiply.addAll(key.getArguments());
+				} else{
+					elementsToMultiply.add(key);
+				}
+				elementsToMultiply.add(new NumConstant(exprMap.get(key)));
+				exprList.add(new Product(elementsToMultiply));
 			}
 		}
 		return exprList;
